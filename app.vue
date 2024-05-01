@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import jsonData from "./assets/data.json";
 
-useHead({ bodyAttrs: { class: "bg-white dark:bg-gray-900 " } });
+useHead({
+  bodyAttrs: { class: "bg-white dark:bg-gray-900 touch-manipulation" },
+});
 
 type Data = {
   categories: Category[];
