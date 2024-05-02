@@ -91,76 +91,21 @@ function shuffleArray(array: any[]) {
     array[j] = temp;
   }
 }
+
+const rotate = 2;
 </script>
 
 <template>
-  <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
-  <main>
-    <div class="mx-auto mt-24 max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
-      <div class="mx-auto max-w-screen-sm text-center">
-        <div class="absolute right-0 top-0 mr-4 mt-4">
-          <button @click="showRules = true">
-            <svg
-              class="h-8 w-8 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="2"
-                d="M5 7h14M5 12h14M5 17h14"
-              />
-            </svg>
-          </button>
-        </div>
+  <Transition
+    enter-active-class="transition-opacity duration-300 ease-out"
+    leave-active-class="transition-opacity duration-200"
+    enter-from-class="opacity-0 "
+    leave-to-class="opacity-0"
+  >
+    <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
+  </Transition>
 
-        <h1
-          class="text-primary-600 mb-4 text-7xl font-extrabold tracking-tight lg:text-8xl dark:text-white"
-        >
-          Showoff
-        </h1>
+  <RulesButton @click="showRules = true"></RulesButton>
 
-        <div
-          class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white"
-        >
-          <template v-if="!currentCategory">
-            <SolidButton @click="startGame(false)">Play</SolidButton>
-            <OutlineButton @click="startGame(true)">+ Modifiers</OutlineButton>
-          </template>
-          <OutlineButton v-else @click="nextTurn()">Next turn</OutlineButton>
-        </div>
-
-        <div class="text-left">
-          <template v-if="currentCategory">
-            <p
-              class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white"
-            >
-              {{ currentCategory.name }}
-            </p>
-            <p
-              class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400"
-              v-html="currentCategory.description"
-            ></p>
-          </template>
-
-          <template v-if="currentModifier">
-            <p
-              class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white"
-            >
-              {{ currentModifier.name }}
-            </p>
-            <p
-              class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400"
-              v-html="currentModifier.description"
-            ></p>
-          </template>
-        </div>
-      </div>
-    </div>
-  </main>
+  <main></main>
 </template>
