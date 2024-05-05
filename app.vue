@@ -24,15 +24,15 @@ type Modifier = {
   excludedModifiers?: number[] | string[]; // id of modifiers
 };
 
-const DATA: Data = setupData();
+const DATA: Data = setupData(); // backup of data
 let categories: Category[] = [];
 let modifiers: Modifier[] = [];
 let playWithModifiers = true;
 
 const showRules = ref(false);
-const currentCategory = ref<Category | null>(null);
-const currentModifier = ref<Modifier | null>(null);
 const prompt = ref<String | null>(null);
+const categoryDesc = ref<String | null>(null);
+const modifierDesc = ref<String | null>(null);
 
 function setupData() {
   let data: Data = jsonData;
@@ -58,15 +58,19 @@ function startGame(useModifiers: boolean) {
 }
 
 function nextTurn() {
-  currentModifier.value = null;
-  currentCategory.value = getCategory();
+  modifierDesc.value = null;
+  const currentCategory = getCategory();
+  categoryDesc.value = currentCategory.description;
+  let p = currentCategory.name;
   if (playWithModifiers && Math.random() < 0.3) {
-    currentModifier.value = getModifier();
+    const currentModifier = getModifier();
+    modifierDesc.value = currentModifier.description;
+    p += `... ${currentModifier.name}`;
   }
-  prompt.value = `${currentCategory.value!.name}${currentModifier.value ? `... ${currentModifier.value.name}` : ""}`;
+  prompt.value = p
 }
 
-function getCategory() {
+function getCategory(): Category {
   let category = categories.pop();
   if (category === undefined) {
     categories = [...DATA.categories];
@@ -76,7 +80,7 @@ function getCategory() {
   return category!;
 }
 
-function getModifier() {
+function getModifier(): Modifier {
   let modifier = modifiers.pop();
   if (modifier === undefined) {
     modifiers = [...DATA.modifiers];
@@ -106,16 +110,16 @@ function shuffleArray(array: any[]) {
     <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
       <header class="m-5 flex">
         <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
-        <HamburgerButton class="h-10 w-10 text-gray-800 sm:h-8 sm:w-8 dark:text-white" @click="showRules = true">
+        <HamburgerButton class="h-7 w-7 text-gray-800 sm:h-7 sm:w-7 dark:text-white" @click="showRules = true">
         </HamburgerButton>
       </header>
 
       <div class="flex grow flex-col">
         <div class="my-auto flex flex-col">
           <div class="relative z-0 h-96">
-            <Card class="z-30" :prompt="prompt"></Card>
-            <Card class="z-20 rotate-3"></Card>
-            <Card class="z-10 -rotate-2"></Card>
+            <Card class="z-30" :prompt="prompt" :category-desc="categoryDesc" :modifier-desc="modifierDesc"></Card>
+            <Card class="pointer-events-none z-20 rotate-3"></Card>
+            <Card class="pointer-events-none z-10 -rotate-2"></Card>
           </div>
 
           <SolidButton class="mx-auto mt-10 w-28 sm:mb-20" @click="nextTurn()">Next Turn</SolidButton>
