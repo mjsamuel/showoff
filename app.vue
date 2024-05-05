@@ -63,7 +63,7 @@ function nextTurn() {
   if (playWithModifiers && Math.random() < 0.3) {
     currentModifier.value = getModifier();
   }
-  prompt.value = `${currentCategory.value!.name} ${currentModifier.value ? ` ${currentModifier.value.name}` : ""}`;
+  prompt.value = `${currentCategory.value!.name}${currentModifier.value ? `... ${currentModifier.value.name}` : ""}`;
 }
 
 function getCategory() {

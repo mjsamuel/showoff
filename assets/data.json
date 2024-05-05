@@ -604,94 +604,94 @@
   ],
   "modifiers": [
     {
-      "name": "...using the opposite hand(s)",
+      "name": "using the opposite hand(s)",
       "description": "The move must now be handled using the opposite hands that the player normally uses - for example, if it's a cut where the right hand is dominant and the left hand is lower, then the hands must be swapped."
     },
     {
-      "name": "...but it can't be a cut",
+      "name": "but it can't be a cut",
       "description": "Self-explanatory"
     },
     {
-      "name": "...but you can’t use your thumb",
+      "name": "but you can’t use your thumb",
       "description": "Self-explanatory"
     },
     {
-      "name": "...and finish with a T.G Deck Flip",
+      "name": "and finish with a T.G Deck Flip",
       "description": "After doing the round's move, the player must then execute a full (360-degree) deck flip. If any cards are dropped or the move does not complete a 360-degree rotation, then it is considered a failure"
     },
     {
-      "name": "...without looking",
+      "name": "without looking",
       "description": "The player must close their eyes and not peek while performing the round's move"
     },
     {
-      "name": "...behind your back",
+      "name": "behind your back",
       "description": "The move must be performed with the card held behind the player's back"
     },
     {
-      "name": "...holding the cards high above your head",
+      "name": "holding the cards high above your head",
       "description": "The move must be performed with both arms straight up above the player's head"
     },
     {
-      "name": "...3 times in a row",
+      "name": "3 times in a row",
       "description": "The move must be performed perfectly, without dropping any cards, 3 times in succession"
     },
     {
-      "name": "...without changing the order of the deck",
+      "name": "without changing the order of the deck",
       "description": "The player must choose and perform a move fitting the round's category that subsequently does not change the order of the cards. The top and bottom cards of the deck will be checked before and after the move is done for verification."
     },
     {
-      "name": "...backwards",
+      "name": "backwards",
       "description": "Sometimes almost impossible, the player must perform their move in reverse, starting with the closer and ending with the opener."
     },
     {
-      "name": "...with your arms crossed",
+      "name": "with your arms crossed",
       "description": "The player must perform their move with their arms crossed, one over the other. Which arm they choose to cross over which is up to them. If they choose a one-handed move, then the move must be done in both hands simultaneously"
     },
     {
-      "name": "...with the cards sideways",
+      "name": "with the cards sideways",
       "description": "The player must perform the move they've chosen with the cards oriented 90 degrees from how they normally handle them."
     },
     {
-      "name": "...and do 3 moves from this category"
+      "name": "and do 3 moves from this category"
     },
     {
-      "name": "...upside-down",
+      "name": "upside-down",
       "description": "The player must now perform the move in a way that it's presented upside-down. This can involve lying on their back or holding the cards above their head so the cards are inverted, or by changing the physics of the move's handling so that is performed upside-down"
     },
     {
-      "name": "...but it has to be from a book",
+      "name": "but it has to be from a book",
       "description": "Moves that have been published and taught in printed form. This includes (lecture) notes and eBooks, as well as flourishes that have been taught in magic books and other non-cardist targeted works; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
     },
     {
-      "name": "...but it has to be from a DVD/VHS",
+      "name": "but it has to be from a DVD/VHS",
       "description": "Moves that have been published and taught on DVD or VHS tapes. This includes flourishes taught on magic DVD/VHS’s; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
     },
     {
-      "name": "...with your elbows touching",
+      "name": "with your elbows touching",
       "description": "Self-explanatory"
     },
     {
-      "name": "...standing on one leg, on your tip-toes",
+      "name": "standing on one leg, on your tip-toes",
       "description": "Self-explanatory"
     },
     {
-      "name": "...but you can’t use your index fingers",
+      "name": "but you can’t use your index fingers",
       "description": "Self-explanatory"
     },
     {
-      "name": "...but you can’t use your middle fingers",
+      "name": "but you can’t use your middle fingers",
       "description": "Self-explanatory"
     },
     {
-      "name": "...but you can’t use your ring fingers",
+      "name": "but you can’t use your ring fingers",
       "description": "Self-explanatory"
     },
     {
-      "name": "...but you can’t use your hands",
+      "name": "but you can’t use your hands",
       "description": "Self-explanatory"
     },
     {
-      "name": "...and finish by tearing one card from your deck in half. (Alternatively, lose 1 life and skip this turn.)",
+      "name": "and finish by tearing one card from your deck in half. (Alternatively, lose 1 life and skip this turn.)",
       "description": "Self-explanatory"
     }
   ]
