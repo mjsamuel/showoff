@@ -2,6 +2,7 @@
 import jsonData from "./assets/data.json";
 
 useHead({
+  title: "Showoff",
   bodyAttrs: { class: "bg-white dark:bg-gray-900 touch-manipulation" },
 });
 
