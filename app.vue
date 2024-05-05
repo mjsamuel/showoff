@@ -26,11 +26,12 @@ type Modifier = {
 const DATA: Data = setupData();
 let categories: Category[] = [];
 let modifiers: Modifier[] = [];
-let playWithModifiers = false;
+let playWithModifiers = true;
 
 const showRules = ref(false);
 const currentCategory = ref<Category | null>(null);
 const currentModifier = ref<Modifier | null>(null);
+const prompt = ref<String | null>(null);
 
 function setupData() {
   let data: Data = jsonData;
@@ -61,6 +62,7 @@ function nextTurn() {
   if (playWithModifiers && Math.random() < 0.3) {
     currentModifier.value = getModifier();
   }
+  prompt.value = `${currentCategory.value!.name} ${currentModifier.value ? ` ${currentModifier.value.name}` : ""}`;
 }
 
 function getCategory() {
@@ -91,21 +93,33 @@ function shuffleArray(array: any[]) {
     array[j] = temp;
   }
 }
-
-const rotate = 2;
 </script>
 
 <template>
-  <Transition
-    enter-active-class="transition-opacity duration-300 ease-out"
-    leave-active-class="transition-opacity duration-200"
-    enter-from-class="opacity-0 "
-    leave-to-class="opacity-0"
-  >
+  <Transition enter-active-class="transition-opacity duration-300 ease-out"
+    leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0 " leave-to-class="opacity-0">
     <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
   </Transition>
 
-  <RulesButton @click="showRules = true"></RulesButton>
+  <main class="sm:flex sm:justify-center">
+    <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
+      <header class="m-5 flex">
+        <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
+        <HamburgerButton class="h-10 w-10 text-gray-800 sm:h-8 sm:w-8 dark:text-white" @click="showRules = true">
+        </HamburgerButton>
+      </header>
 
-  <main></main>
+      <div class="flex grow flex-col">
+        <div class="my-auto flex flex-col">
+          <div class="relative z-0 h-96">
+            <Card class="z-30" :prompt="prompt"></Card>
+            <Card class="z-20 rotate-3"></Card>
+            <Card class="z-10 -rotate-2"></Card>
+          </div>
+
+          <SolidButton class="mx-auto mt-10 w-28 sm:mb-20" @click="nextTurn()">Next Turn</SolidButton>
+        </div>
+      </div>
+    </div>
+  </main>
 </template>

@@ -19,7 +19,7 @@
           <div
             class="relative rounded-lg bg-white shadow dark:bg-gray-700"
             tabindex="0"
-            @keydown.esc="console.log('test')"
+            @keydown.esc="$emit('closeModal')"
           >
             <!-- Modal header -->
             <div
