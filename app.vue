@@ -30,9 +30,8 @@ let modifiers: Modifier[] = [];
 let playWithModifiers = true;
 
 const showRules = ref(false);
-const prompt = ref<String | null>(null);
-const categoryDesc = ref<String | null>(null);
-const modifierDesc = ref<String | null>(null);
+const currCategory = ref<Cateogry | null>(null);
+const currModifier = ref<Modifier | null>(null);
 
 function setupData() {
   let data: Data = jsonData;
@@ -58,16 +57,11 @@ function startGame(useModifiers: boolean) {
 }
 
 function nextTurn() {
-  modifierDesc.value = null;
-  const currentCategory = getCategory();
-  categoryDesc.value = currentCategory.description;
-  let p = currentCategory.name;
+  currModifier.value = null;
+  currCategory.value = getCategory();
   if (playWithModifiers && Math.random() < 0.3) {
-    const currentModifier = getModifier();
-    modifierDesc.value = currentModifier.description;
-    p += `... ${currentModifier.name}`;
+    currModifier.value = getModifier();
   }
-  prompt.value = p;
 }
 
 function getCategory(): Category {
@@ -115,14 +109,9 @@ function shuffleArray(array: any[]) {
       </header>
 
       <div class="flex grow flex-col">
-        <div class="my-auto flex flex-col">
-          <div class="relative z-0 h-96">
-            <Card class="z-30" :prompt="prompt" :category-desc="categoryDesc" :modifier-desc="modifierDesc"></Card>
-            <Card class="pointer-events-none z-20 rotate-3"></Card>
-            <Card class="pointer-events-none z-10 -rotate-2"></Card>
-          </div>
-
-          <SolidButton class="mx-auto mt-10 w-28 sm:mb-20" @click="nextTurn()">Next Turn</SolidButton>
+        <SolidButton class="mx-auto mb-6 w-28 sm:mb-20" @click="nextTurn()">Next Turn</SolidButton>
+        <div v-if="currCategory" class="relative z-0 m-auto h-full w-96">
+          <Card class="z-10" :category="currCategory" :modifier="currModifier"></Card>
         </div>
       </div>
     </div>
