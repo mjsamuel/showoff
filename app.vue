@@ -67,7 +67,7 @@ function nextTurn() {
     modifierDesc.value = currentModifier.description;
     p += `... ${currentModifier.name}`;
   }
-  prompt.value = p
+  prompt.value = p;
 }
 
 function getCategory(): Category {
@@ -110,7 +110,7 @@ function shuffleArray(array: any[]) {
     <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
       <header class="m-5 flex">
         <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
-        <HamburgerButton class="h-7 w-7 text-gray-800 sm:h-7 sm:w-7 dark:text-white" @click="showRules = true">
+        <HamburgerButton class="h-9 w-9 text-gray-800 dark:text-white" @click="showRules = true">
         </HamburgerButton>
       </header>
 

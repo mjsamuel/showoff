@@ -1,10 +1,8 @@
 <template>
   <button>
-    <svg :class="class" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-      height="24" fill="currentColor" viewBox="0 0 24 24">
-      <path fill-rule="evenodd"
-        d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
-        clip-rule="evenodd" />
+    <svg :class="class" class="h-[24px] w-[24px] text-gray-800 dark:text-white" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-linecap="round" stroke-width="2.5" d="M5 7h14M5 12h14M5 17h14" />
     </svg>
   </button>
 </template>
