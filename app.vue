@@ -3,7 +3,7 @@ import jsonData from "./assets/data.json";
 
 useHead({
   title: "Showoff",
-  bodyAttrs: { class: "bg-white dark:bg-gray-900 touch-manipulation" },
+  bodyAttrs: { class: "bg-white dark:bg-gray-900" },
 });
 
 type Data = {
@@ -12,16 +12,15 @@ type Data = {
 };
 
 type Category = {
-  id: number;
   name: string;
   description?: string | string[];
-  excludedModifiers?: number[] | string[]; // id of modifiers
+  excluded?: string[];
 };
 
 type Modifier = {
   name: string;
   description?: string | string[];
-  excludedModifiers?: number[] | string[]; // id of modifiers
+  excluded?: string[];
 };
 
 const DATA: Data = setupData(); // backup of data
@@ -59,7 +58,7 @@ function startGame(useModifiers: boolean) {
 function nextTurn() {
   currModifier.value = null;
   currCategory.value = getCategory();
-  if (playWithModifiers && Math.random() < 0.3) {
+  if (playWithModifiers && Math.random() < 1) {
     currModifier.value = getModifier();
   }
 }
@@ -95,8 +94,12 @@ function shuffleArray(array: any[]) {
 </script>
 
 <template>
-  <Transition enter-active-class="transition-opacity duration-300 ease-out"
-    leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0 " leave-to-class="opacity-0">
+  <Transition
+    enter-active-class="transition-opacity duration-300 ease-out"
+    leave-active-class="transition-opacity duration-200"
+    enter-from-class="opacity-0 "
+    leave-to-class="opacity-0"
+  >
     <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
   </Transition>
 
@@ -104,14 +107,23 @@ function shuffleArray(array: any[]) {
     <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
       <header class="m-5 flex">
         <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
-        <HamburgerButton class="h-9 w-9 text-gray-800 dark:text-white" @click="showRules = true">
+        <HamburgerButton
+          class="h-9 w-9 text-gray-800 dark:text-white"
+          @click="showRules = true"
+        >
         </HamburgerButton>
       </header>
 
       <div class="flex grow flex-col">
-        <SolidButton class="mx-auto mb-6 w-28 sm:mb-20" @click="nextTurn()">Next Turn</SolidButton>
-        <div v-if="currCategory" class="relative z-0 m-auto h-full w-96">
-          <Card class="z-10" :category="currCategory" :modifier="currModifier"></Card>
+        <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()"
+          >Next Turn</SolidButton
+        >
+        <div class="relative z-0 m-auto h-full w-96">
+          <Card
+            class="z-10"
+            :category="currCategory"
+            :modifier="currModifier"
+          ></Card>
         </div>
       </div>
     </div>
