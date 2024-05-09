@@ -7,23 +7,19 @@ useHead({
 });
 
 type Prompt = {
-  key?: string;
   name: string;
   description?: string | string[];
   excluded?: string[];
 };
-
-type Data = {
-  categories: Record<string, Prompt>;
-  modifiers: Record<string, Prompt>;
-};
+type KeyedPrompt = Prompt & { key: string };
 
 type Card = {
-  category: Prompt;
-  modifier?: Prompt;
+  category: KeyedPrompt;
+  modifier?: KeyedPrompt;
 };
 
-const MODIFIER_PROBABILITY = 0.3;
+const MODIFIER_PROBABILITY = 1;
+const MAX_CARDS = 3;
 
 const data = {
   categories: preparePrompts(jsonData.categories),
@@ -50,7 +46,7 @@ function getPrompt(type: "categories" | "modifiers", excluded?: string[]) {
   }
 
   const index = randomNumberInRange(0, prompts.length - 1);
-  let prompt: Prompt | null = null;
+  let prompt: KeyedPrompt | null = null;
   while (!prompt) {
     prompt = prompts[index];
   }
@@ -69,7 +65,10 @@ function nextTurn() {
   if (playWithModifiers && Math.random() < MODIFIER_PROBABILITY) {
     modifier = getPrompt("modifiers");
   }
-  cards.value.unshift({ category, modifier });
+  cards.value.push({ category, modifier });
+  if (cards.value.length > MAX_CARDS) {
+    cards.value.shift();
+  }
 }
 
 function randomNumberInRange(min: number, max: number): number {
@@ -94,9 +93,10 @@ function randomNumberInRange(min: number, max: number): number {
       <div class="flex grow flex-col">
         <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()">Next Turn</SolidButton>
         <div class="relative z-0 m-auto h-full w-96">
-          <Card v-for="(card, index) in cards" class="z-10" :category="card.category" :modifier="card.modifier"></Card>
+          <Card :cards="cards"></Card>
         </div>
       </div>
     </div>
+
   </main>
 </template>
