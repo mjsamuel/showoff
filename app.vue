@@ -1,3 +1,27 @@
+<template>
+  <Transition enter-active-class="transition-opacity duration-300 ease-out"
+    leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0 " leave-to-class="opacity-0">
+    <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
+  </Transition>
+
+  <main class="sm:flex sm:justify-center">
+    <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
+      <header class="m-5 flex">
+        <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
+        <HamburgerButton class="h-9 w-9 text-gray-800 dark:text-white" @click="showRules = true">
+        </HamburgerButton>
+      </header>
+
+      <div class="flex grow flex-col">
+        <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()">Next Turn</SolidButton>
+        <div class="relative z-0 m-auto h-full w-96">
+          <Card :cards="cards" @category-entered="trimCards"></Card>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+
 <script setup lang="ts">
 import jsonData from "./assets/data.json";
 
@@ -19,7 +43,6 @@ type Card = {
 };
 
 const MODIFIER_PROBABILITY = 1;
-const MAX_CARDS = 3;
 
 const data = {
   categories: preparePrompts(jsonData.categories),
@@ -66,37 +89,16 @@ function nextTurn() {
     modifier = getPrompt("modifiers");
   }
   cards.value.push({ category, modifier });
-  if (cards.value.length > MAX_CARDS) {
-    cards.value.shift();
+}
+
+function trimCards() {
+  if (cards.value.length <= 1) {
+    return;
   }
+  cards.value.shift();
 }
 
 function randomNumberInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 </script>
-
-<template>
-  <Transition enter-active-class="transition-opacity duration-300 ease-out"
-    leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0 " leave-to-class="opacity-0">
-    <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
-  </Transition>
-
-  <main class="sm:flex sm:justify-center">
-    <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
-      <header class="m-5 flex">
-        <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
-        <HamburgerButton class="h-9 w-9 text-gray-800 dark:text-white" @click="showRules = true">
-        </HamburgerButton>
-      </header>
-
-      <div class="flex grow flex-col">
-        <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()">Next Turn</SolidButton>
-        <div class="relative z-0 m-auto h-full w-96">
-          <Card :cards="cards"></Card>
-        </div>
-      </div>
-    </div>
-
-  </main>
-</template>

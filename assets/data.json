@@ -78,15 +78,20 @@
     },
     "spread": {
       "name": "Moves using a spread",
-      "description": "Any move that *functionally* involves a spread. Just throwing a spread into any random move doesn’t count. But you knew that, right?"
+      "description": "Any move that <i>functionally</i> involves a spread. Just throwing a spread into any random move doesn’t count. But you knew that, right?"
     },
     "looping": {
       "name": "Looping moves (3 Reps)",
-      "description": "Moves where an action or sequence is repeated at least 3 times. Note: merely doing a move 3 times does not count. The repeating mechanic must be performed *before* the move closes."
+      "description": "Moves where an action or sequence is repeated at least 3 times. Note: merely doing a move 3 times does not count. The repeating mechanic must be performed <i>before</i> the move closes."
     },
     "isolations": {
       "name": "Isolations",
-      "description": "Moves that either: 1) create the overt appearance of one or more cards/packet being suspended momentarily in space, or: 2) cause one or more cards/packets to move around a fixed point in space."
+      "description": [
+        "Moves that either:<ol>",
+        "<li>create the overt appearance of one or more cards/packet being suspended momentarily in space, or:</li>",
+        "<li>cause one or more cards/packets to move around a fixed point in space.</li>",
+        "</ol>"
+      ]
     },
     "shots": {
       "name": "Card shots",
@@ -129,7 +134,12 @@
     },
     "ndo": {
       "name": "New Deck Order/School of Cardistry moves",
-      "description": "Moves that: 1) have been created by Jaspas Deck, or 2) are original creations taught by cardists through New Deck Order Free/Premium Tutorials"
+      "description": [
+        "Moves that:<ol>",
+        "<li>have been created by Jaspas Deck, or</li>",
+        "<li>are original creations taught by cardists through New Deck Order Free/Premium Tutorials</li>",
+        "</ol>"
+      ]
     },
     "dealersgrip": {
       "name": "Dealersgrip moves",
@@ -578,8 +588,8 @@
       "description": "Self-explanatory"
     },
     "tear-a-card": {
-      "name": "and finish by tearing one card from your deck in half. (Alternatively, lose 1 life and skip this turn.)",
-      "description": "Self-explanatory"
+      "name": "and finish by tearing one card from your deck in half",
+      "description": "Alternatively, lose 1 life and skip this turn"
     }
   }
 }
