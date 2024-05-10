@@ -37,16 +37,16 @@ function onAfterCategoryEnter() {
 }
 </script>
 
-<style scoped>
-ol {
+<style lang="postcss" scoped>
+:deep(ol) {
   @apply list-inside list-decimal;
 }
 
-ul {
+:deep(ul) {
   @apply list-inside list-disc;
 }
 
-i {
+:deep(i) {
   @apply italic;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-900 bg-opacity-75"></div>
 
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="fixed inset-0 z-50 w-screen overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
         @click.self="$emit('closeModal')">
         <div
@@ -36,7 +36,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="postcss" scoped>
 :deep(h1) {
   @apply mb-2 mt-4 text-2xl font-bold dark:text-white;
 }

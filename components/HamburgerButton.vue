@@ -1,6 +1,6 @@
 <template>
   <button>
-    <svg :class="class" class="h-[24px] w-[24px] text-gray-800 dark:text-white" aria-hidden="true"
+    <svg :class="class" aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-width="2.5" d="M5 7h14M5 12h14M5 17h14" />
     </svg>

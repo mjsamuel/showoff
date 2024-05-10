@@ -43,7 +43,7 @@ type Card = {
   modifier?: KeyedPrompt;
 };
 
-const MODIFIER_PROBABILITY = 1;
+const MODIFIER_PROBABILITY = 0.3;
 
 const data = {
   categories: preparePrompts(jsonData.categories),
@@ -118,3 +118,9 @@ function randomNumberInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 </script>
+
+<style lang="postcss" scoped>
+* {
+  @apply touch-manipulation;
+}
+</style>
