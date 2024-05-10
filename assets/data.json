@@ -2,18 +2,22 @@
   "categories": {
     "fans": {
       "name": "Fans",
-      "description": "Moves that spread the cards out in a circular or semi-circular fashion.",
-      "excludedModifiers": []
+      "description": "Moves that spread the cards out in a circular or semi-circular fashion."
     },
     "one-handed": {
       "name": "One-handed moves (no cuts)",
       "description": "Moves performed using only one hand (can be either hand). No cuts allowed.",
-      "excludedModifiers": []
+      "excluded": [
+        "no-hands"
+      ]
     },
     "one-handed-cuts": {
       "name": "One-handed cuts",
       "description": "Cuts performed using only one hand (can be either hand).",
-      "excludedModifiers": []
+      "excluded": [
+        "exclude-cuts",
+        "no-hands"
+      ]
     },
     "aerials": {
       "name": "Aerials",
@@ -38,27 +42,35 @@
     "three-packets": {
       "name": "3 Packet Moves",
       "description": "See title. Note: closing packets and then introducing new packets later on during the flourish is not allowed. Only 3 packets must be in play throughout the duration of the move.",
-      "excludedModifiers": []
+      "excluded": [
+        "exclude-cuts"
+      ]
     },
     "four-packets": {
       "name": "4 Packet moves.",
       "description": "See title. Note: closing packets and then introducing new packets later on during the flourish is not allowed. Only 4 packets must be in play throughout the duration of the move.",
-      "excludedModifiers": []
+      "excluded": [
+        "exclude-cuts"
+      ]
     },
     "five-packets": {
       "name": "5 Packet Moves",
       "description": "See title. Note: closing packets and then introducing new packets later on during the flourish is not allowed. Only 4 packets must be in play throughout the duration of the move.",
-      "excludedModifiers": []
+      "excluded": [
+        "exclude-cuts"
+      ]
     },
     "two-packets": {
       "name": "Two-handed 2 Packet Moves",
       "description": "Moves that use only two packets. Moves performed only using one hand are not allowed, nor two-handed versions of pre-existing one-handed moves (we know you were thinking it).",
-      "excludedModifiers": []
+      "excluded": [
+        "exclude-cuts"
+      ]
     },
     "full-deck": {
       "name": "Full deck moves",
       "description": "Moves where the entire deck is manipulated as a single block. The deck cannot be separated into multiple portions, and no overt fanning/spreading of the deck is allowed. However, if the deck becomes slightly unsquare as a result of the handling of the move, then that is fine.",
-      "excludedModifiers": []
+      "excluded": []
     },
     "springs-cascades": {
       "name": "Springs & Cascades",
@@ -70,7 +82,7 @@
     },
     "two-dimensional-display": {
       "name": "2D Displays",
-      "description": "Displays that are ‘flat’. Fans are not allowed."
+      "description": "Displays that are 'flat'. Fans are not allowed."
     },
     "three-dimensional-structures": {
       "name": "3D Structures and Shapes",
@@ -78,7 +90,7 @@
     },
     "spread": {
       "name": "Moves using a spread",
-      "description": "Any move that <i>functionally</i> involves a spread. Just throwing a spread into any random move doesn’t count. But you knew that, right?"
+      "description": "Any move that <i>functionally</i> involves a spread. Just throwing a spread into any random move doesn't count. But you knew that, right?"
     },
     "looping": {
       "name": "Looping moves (3 Reps)",
@@ -112,7 +124,7 @@
     },
     "table-moves": {
       "name": "Table/surface moves",
-      "description": "Moves that require the use of a table or other surface to work. (Note: simply placing the deck on a surface and giving it a basic cut/shuffle is not allowed. I can’t believe we actually have to mention this.)"
+      "description": "Moves that require the use of a table or other surface to work. (Note: simply placing the deck on a surface and giving it a basic cut/shuffle is not allowed. I can't believe we actually have to mention this.)"
     },
     "dan-dave": {
       "name": "Dan and Dave moves",
@@ -153,15 +165,15 @@
       "name": "Superhandz/Handlordz moves (XCM)",
       "description": [
         "<ol>Moves:",
-        "<li>created by De’vo vom Schattenreich or Jerry Cestkowski,</li>",
+        "<li>created by De'vo vom Schattenreich or Jerry Cestkowski,</li>",
         "<li>created by card handlers heavily associated with Superhandz/Handlordz, or</li>",
-        "<li>that are a trademark staple of the ‘XCM’ style of card handling</li>",
+        "<li>that are a trademark staple of the 'XCM' style of card handling</li>",
         "</ol>"
       ]
     },
     "breath": {
       "name": "Moves using your breath",
-      "description": "Moves that use one’s breath to actively manipulate one card or more at any point during the flourish."
+      "description": "Moves that use one's breath to actively manipulate one card or more at any point during the flourish."
     },
     "both-hands": {
       "name": "Do the same move in both hands",
@@ -181,7 +193,7 @@
     },
     "interlocks": {
       "name": "Interlock moves",
-      "description": "Moves that employ the ‘Interlock’ principle."
+      "description": "Moves that employ the 'Interlock' principle."
     },
     "originals": {
       "name": "Original moves",
@@ -189,7 +201,7 @@
     },
     "opponent": {
       "name": "Moves by your opponent",
-      "description": "Moves that the player’s opponent has created. For verification's sake, this has to be a move that has either been performed or taught on a public video before."
+      "description": "Moves that the player's opponent has created. For verification's sake, this has to be a move that has either been performed or taught on a public video before."
     },
     "face": {
       "name": "Moves using your face",
@@ -229,7 +241,7 @@
     },
     "viral-videos": {
       "name": "Moves from viral cardistry videos",
-      "description": "Moves that have appeared in any video that has broken through into the mainstream and has been seen by a significant number of non-cardists. (So basically, any cardistry video or GIF that’s hit the front page of reddit.)"
+      "description": "Moves that have appeared in any video that has broken through into the mainstream and has been seen by a significant number of non-cardists. (So basically, any cardistry video or GIF that's hit the front page of reddit.)"
     },
     "twirls": {
       "name": "Twirls",
@@ -261,11 +273,11 @@
     },
     "backhanded": {
       "name": "Backhanded moves",
-      "description": "Moves where one card or more is placed on and manipulated by the back of one’s hand."
+      "description": "Moves where one card or more is placed on and manipulated by the back of one's hand."
     },
     "sybil-variations": {
       "name": "Sybil Variations",
-      "description": "Variations of moves employing the ‘Sybil’ mechanic."
+      "description": "Variations of moves employing the 'Sybil' mechanic."
     },
     "brand": {
       "name": "Moves named after brands",
@@ -305,7 +317,7 @@
     },
     "i": {
       "name": "Moves starting with I",
-      "description": "Moves that have a title starting with the letter I. (Note: \"Isolation\" isn’t a move. It’s a category.)"
+      "description": "Moves that have a title starting with the letter I. (Note: \"Isolation\" isn't a move. It's a category.)"
     },
     "j": {
       "name": "Moves starting with J",
@@ -373,7 +385,7 @@
     },
     "z": {
       "name": "Moves starting with Z",
-      "description": "Moves that have a title starting with the letter Z. (Note: Z-grip isn’t a move. It’s just shorthand for the relative position of three packets to each other.)"
+      "description": "Moves that have a title starting with the letter Z. (Note: Z-grip isn't a move. It's just shorthand for the relative position of three packets to each other.)"
     },
     "norwegian": {
       "name": "Norwegian moves",
@@ -453,7 +465,7 @@
     },
     "numbers": {
       "name": "Moves with numbers in the title",
-      "description": "(Hint: a lot of these are ‘sequels’)"
+      "description": "(Hint: a lot of these are 'sequels')"
     },
     "touch": {
       "name": "Cardistry Touch moves",
@@ -483,20 +495,33 @@
     },
     "books": {
       "name": "Moves from books",
-      "description": "Moves that have been published and taught in printed form. This includes (lecture) notes and eBooks, as well as flourishes that have been taught in magic books and other non-cardist targeted works; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
+      "description": "Moves that have been published and taught in printed form. This includes (lecture) notes and eBooks, as well as flourishes that have been taught in magic books and other non-cardist targeted works; however, the player must cite their source when deciding on which move they will be performing. (If they're found to be full of BS, then they will be banned from playing Showoff for life. Heh.)",
+      "excluded": [
+        "books"
+      ]
     },
     "dead-formats": {
       "name": "DVD/VHS moves",
-      "description": "Moves that have been published and taught on DVD or VHS tapes. This includes flourishes taught on magic DVD/VHS’s; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
+      "description": "Moves that have been published and taught on DVD or VHS tapes. This includes flourishes taught on magic DVD/VHS's; however, the player must cite their source when deciding on which move they will be performing. (If they're found to be full of BS, then they will be banned from playing Showoff for life. Heh.)",
+      "excluded": [
+        "from-dead-format"
+      ]
     },
     "anyone": {
       "name": "Anyone moves",
       "description": "Original moves that have been created or taught by any past and present members of Anyone, and that have been published through Anyone."
     },
     "canadian": {
-      "id": 114,
-      "name": "Canadian moves ",
+      "name": "Canadian moves",
       "description": "Moves by cardists hailing from Canada"
+    },
+    "asian": {
+      "name": "Asian moves",
+      "description": "Moves by cardists hailing from Asia"
+    },
+    "uk": {
+      "name": "UK moves",
+      "description": "Moves by cardists hailing from the United Kingdom"
     }
   },
   "modifiers": {
@@ -505,12 +530,10 @@
       "description": "The move must now be handled using the opposite hands that the player normally uses - for example, if it's a cut where the right hand is dominant and the left hand is lower, then the hands must be swapped."
     },
     "exclude-cuts": {
-      "name": "but it can't be a cut",
-      "description": "Self-explanatory"
+      "name": "but it can't be a cut"
     },
     "exclude-thumbs": {
-      "name": "but you can’t use your thumb",
-      "description": "Self-explanatory"
+      "name": "but you can't use your thumb"
     },
     "deck-flip-finish": {
       "name": "and finish with a T.G Deck Flip",
@@ -555,37 +578,31 @@
       "name": "upside-down",
       "description": "The player must now perform the move in a way that it's presented upside-down. This can involve lying on their back or holding the cards above their head so the cards are inverted, or by changing the physics of the move's handling so that is performed upside-down"
     },
-    "book": {
+    "books": {
       "name": "but it has to be from a book",
-      "description": "Moves that have been published and taught in printed form. This includes (lecture) notes and eBooks, as well as flourishes that have been taught in magic books and other non-cardist targeted works; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
+      "description": "Moves that have been published and taught in printed form. This includes (lecture) notes and eBooks, as well as flourishes that have been taught in magic books and other non-cardist targeted works; however, the player must cite their source when deciding on which move they will be performing. (If they're found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
     },
     "from-dead-format": {
       "name": "but it has to be from a DVD/VHS",
-      "description": "Moves that have been published and taught on DVD or VHS tapes. This includes flourishes taught on magic DVD/VHS’s; however, the player must cite their source when deciding on which move they will be performing. (If they’re found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
+      "description": "Moves that have been published and taught on DVD or VHS tapes. This includes flourishes taught on magic DVD/VHS's; however, the player must cite their source when deciding on which move they will be performing. (If they're found to be full of BS, then they will be banned from playing Showoff for life. Heh.)"
     },
     "elbows touching": {
-      "name": "with your elbows touching",
-      "description": "Self-explanatory"
+      "name": "with your elbows touching"
     },
     "tip-toes": {
-      "name": "standing on one leg, on your tip-toes",
-      "description": "Self-explanatory"
+      "name": "standing on one leg, on your tip-toes"
     },
     "exclude-index-fingers": {
-      "name": "but you can’t use your index fingers",
-      "description": "Self-explanatory"
+      "name": "but you can't use your index fingers"
     },
     "exclude-middle-fingers": {
-      "name": "but you can’t use your middle fingers",
-      "description": "Self-explanatory"
+      "name": "but you can't use your middle fingers"
     },
     "exclude-ring-fingers": {
-      "name": "but you can’t use your ring fingers",
-      "description": "Self-explanatory"
+      "name": "but you can't use your ring fingers"
     },
     "no-hands": {
-      "name": "but you can’t use your hands",
-      "description": "Self-explanatory"
+      "name": "but you can't use your hands"
     },
     "tear-a-card": {
       "name": "and finish by tearing one card from your deck in half",

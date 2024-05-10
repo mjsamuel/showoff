@@ -53,30 +53,6 @@ let playWithModifiers = true;
 const showRules = ref(false);
 const cards = ref<Card[]>([]);
 
-function preparePrompts(prompts: Record<string, Prompt>) {
-  return Object.entries(prompts).map(([key, prompt]) => {
-    if (prompt.description instanceof Array) {
-      prompt.description = prompt.description.join("");
-    }
-    return { key, ...prompt };
-  });
-}
-
-function getPrompt(type: "categories" | "modifiers", excluded?: string[]) {
-  let prompts = data[type];
-  if (prompts.length === 0) {
-    prompts = preparePrompts(jsonData[type] as Record<string, Prompt>);
-  }
-
-  const index = randomNumberInRange(0, prompts.length - 1);
-  let prompt: KeyedPrompt | null = null;
-  while (!prompt) {
-    prompt = prompts[index];
-  }
-  prompts.splice(index, 1);
-  return prompt;
-}
-
 function startGame(useModifiers: boolean) {
   playWithModifiers = useModifiers;
   nextTurn();
@@ -86,9 +62,36 @@ function nextTurn() {
   const category = getPrompt("categories");
   let modifier;
   if (playWithModifiers && Math.random() < MODIFIER_PROBABILITY) {
-    modifier = getPrompt("modifiers");
+    modifier = getPrompt("modifiers", category.excluded);
   }
   cards.value.push({ category, modifier });
+}
+
+function getPrompt(type: "categories" | "modifiers", excluded?: string[]) {
+  let prompts = data[type];
+  if (prompts.length === 0) {
+    prompts = preparePrompts(jsonData[type] as Record<string, Prompt>);
+  }
+
+  let prompt: KeyedPrompt | null = null;
+  while (!prompt) {
+    const index = randomNumberInRange(0, prompts.length - 1);
+    if (excluded?.includes(prompts[index].key)) {
+      continue;
+    }
+    prompt = prompts.splice(index, 1).at(0)!;
+  }
+
+  return prompt;
+}
+
+function preparePrompts(prompts: Record<string, Prompt>) {
+  return Object.entries(prompts).map(([key, prompt]) => {
+    if (prompt.description instanceof Array) {
+      prompt.description = prompt.description.join("");
+    }
+    return { key, ...prompt };
+  });
 }
 
 function trimCards() {
