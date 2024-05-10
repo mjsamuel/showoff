@@ -8,8 +8,7 @@
         <div
           class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
           <!-- content -->
-          <div class="relative rounded-lg bg-white shadow dark:bg-gray-700" tabindex="0"
-            @keydown.esc="$emit('closeModal')">
+          <div class="relative rounded-lg bg-white shadow dark:bg-gray-700" tabindex="0">
             <!-- Modal header -->
             <div class="flex items-center justify-between rounded-t border-b p-4 md:p-5 dark:border-gray-600">
               <h2 class="text-4xl font-bold dark:text-white">Rules</h2>

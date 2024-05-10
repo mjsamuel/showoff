@@ -15,7 +15,7 @@
       <div class="flex grow flex-col">
         <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()">Next Turn</SolidButton>
         <div class="relative z-0 m-auto h-full w-96">
-          <Card :cards="cards" @category-entered="trimCards"></Card>
+          <Cards :cards="cards" @category-entered="trimCards"></Cards>
         </div>
       </div>
     </div>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import jsonData from "./assets/data.json";
+import { onMounted } from "vue";
 
 useHead({
   title: "Showoff",
@@ -52,6 +53,18 @@ let playWithModifiers = true;
 
 const showRules = ref(false);
 const cards = ref<Card[]>([]);
+
+onMounted(() => {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "?") {
+      showRules.value = !showRules.value;
+    } else if (event.key === "Escape") {
+      showRules.value = false;
+    } else if (event.key === "n") {
+      nextTurn();
+    }
+  });
+});
 
 function startGame(useModifiers: boolean) {
   playWithModifiers = useModifiers;
