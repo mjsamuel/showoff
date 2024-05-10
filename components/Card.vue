@@ -8,7 +8,7 @@
         <p class="mb-1 text-2xl font-semibold text-black sm:text-3xl">
           {{ card.category.name }}
         </p>
-        <p class="sm:text-xl font-semibold text-black" v-html="card.category.description"></p>
+        <p class="font-semibold text-black sm:text-xl" v-html="card.category.description"></p>
       </div>
       <!-- modifier card -->
       <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="translate-y-full">
@@ -37,7 +37,7 @@ function onAfterCategoryEnter() {
 }
 </script>
 
-<style>
+<style scoped>
 ol {
   @apply list-inside list-decimal;
 }
