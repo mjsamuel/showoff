@@ -400,7 +400,7 @@
       "description": "Moves that functionally involve your clothing to manipulate the cards."
     },
     "intergrate": {
-      "name": "Moves intergrating other objects",
+      "name": "Moves integrating other objects",
       "description": "Moves that use non-card items around you to manipulate the cards."
     },
     "north-american": {
@@ -533,7 +533,7 @@
       "name": "but it can't be a cut"
     },
     "exclude-thumbs": {
-      "name": "but you can't use your thumb"
+      "name": "but you can't use your thumbs"
     },
     "deck-flip-finish": {
       "name": "and finish with a T.G Deck Flip",

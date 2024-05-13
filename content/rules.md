@@ -55,6 +55,24 @@ cardistry!
    successful play with a modifier, then they can 'target' any other opponent
    and cause them to lose 1 life.
 
+# Solo Mode
+
+1. Showoff can still be played entirely by yourself!
+1. As with the basic mode, deal out 3 'lives' in front of you.
+1. On each turn, tap the 'category' button to generate a category, and perform
+   a move from that category.
+   1. If you succeed, then tap the button again to generate a category for your
+      next turn.
+   1. If you:
+      1. drop cards
+      1. repeat a move
+      1. or can't think of a move to do,
+   1. Then you lose a life and carry on.
+1. The game ends when you run out of lives.
+1. Think of solo mode as a way to practice for Showoff battles and test your own
+   skills and knowledge independently!
+1. About
+
 # About
 
 Showoff was conceived of and developed by
