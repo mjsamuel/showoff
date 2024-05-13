@@ -66,7 +66,7 @@ onMounted(() => {
       showRules.value = !showRules.value;
     } else if (event.key === "Escape") {
       showRules.value = false;
-    } else if (event.key === "n") {
+    } else if (event.key === "n" && cards.value.length) {
       nextTurn();
     }
   });
