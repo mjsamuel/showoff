@@ -24,7 +24,7 @@
               </button>
             </div>
             <!-- Modal body -->
-            <div class="space-y-4 p-4 md:p-5">
+            <div class="space-y-4 p-4">
               <div class="text-base leading-relaxed text-black dark:text-gray-300">
                 <ContentDoc path="/rules" />
               </div>
@@ -43,7 +43,7 @@
 
 :deep(ol),
 :deep(ul) {
-  @apply ml-5 list-outside;
+  @apply ml-6 list-outside;
 }
 
 :deep(ol) {

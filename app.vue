@@ -13,13 +13,19 @@
       </header>
 
       <div class="flex grow flex-col">
-        <SolidButton class="mx-auto mb-6 w-28" @click="nextTurn()">Next Turn</SolidButton>
+        <ButtonRow class="mx-auto mb-4 hidden sm:block" :game-started="cards.length" @start-game="startGame"
+          @next-turn="nextTurn"></ButtonRow>
         <div class="relative z-0 m-auto h-full w-96">
           <Cards :cards="cards" @category-entered="trimCards"></Cards>
         </div>
       </div>
     </div>
   </main>
+
+  <div class="fixed bottom-0 left-0 z-0 flex h-16 w-full pb-4 sm:hidden">
+    <ButtonRow class="mx-auto mb-1 sm:hidden" :game-started="cards.length" @start-game="startGame"
+      @next-turn="nextTurn"></ButtonRow>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -80,7 +86,11 @@ function nextTurn() {
   cards.value.push({ category, modifier });
 }
 
-function getPrompt(type: "categories" | "modifiers", excluded?: string[], deletePrompt = false) {
+function getPrompt(
+  type: "categories" | "modifiers",
+  excluded?: string[],
+  deletePrompt = false,
+) {
   let prompts = data[type];
   if (prompts.length === 0) {
     prompts = preparePrompts(jsonData[type] as Record<string, Prompt>);
