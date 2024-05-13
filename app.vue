@@ -80,7 +80,7 @@ function nextTurn() {
   cards.value.push({ category, modifier });
 }
 
-function getPrompt(type: "categories" | "modifiers", excluded?: string[]) {
+function getPrompt(type: "categories" | "modifiers", excluded?: string[], deletePrompt = false) {
   let prompts = data[type];
   if (prompts.length === 0) {
     prompts = preparePrompts(jsonData[type] as Record<string, Prompt>);
@@ -92,7 +92,7 @@ function getPrompt(type: "categories" | "modifiers", excluded?: string[]) {
     if (excluded?.includes(prompts[index].key)) {
       continue;
     }
-    prompt = prompts.splice(index, 1).at(0)!;
+    prompt = deletePrompt ? prompts.splice(index, 1).at(0)! : prompts[index];
   }
 
   return prompt;
