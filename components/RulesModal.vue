@@ -26,7 +26,7 @@
             <!-- Modal body -->
             <div class="space-y-4 p-4">
               <div class="text-base leading-relaxed text-black dark:text-gray-300">
-                <ContentDoc path="/rules" />
+                <MDC :value="rules" />
               </div>
             </div>
           </div>
@@ -35,6 +35,10 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import rules from "./assets/rules.md?raw";
+</script>
 
 <style lang="postcss" scoped>
 :deep(h1) {

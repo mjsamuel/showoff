@@ -1,13 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   devtools: { enabled: true },
-  modules: ["@nuxt/content"],
+  modules: ['@nuxtjs/mdc'],
   css: ["~/assets/css/main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  vite: {
+    assetsInclude: ["**/*.md"],
   },
 });
