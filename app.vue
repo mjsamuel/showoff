@@ -1,6 +1,10 @@
 <template>
-  <Transition enter-active-class="transition-opacity duration-300 ease-out"
-    leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0 " leave-to-class="opacity-0">
+  <Transition
+    enter-active-class="transition-opacity duration-300 ease-out"
+    leave-active-class="transition-opacity duration-200"
+    enter-from-class="opacity-0 "
+    leave-to-class="opacity-0"
+  >
     <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
   </Transition>
 
@@ -8,13 +12,20 @@
     <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
       <header class="m-5 flex">
         <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
-        <HamburgerButton class="h-9 w-9 text-gray-800 dark:text-white" @click="showRules = true">
+        <HamburgerButton
+          class="h-9 w-9 text-gray-800 dark:text-white"
+          @click="showRules = true"
+        >
         </HamburgerButton>
       </header>
 
       <div class="flex grow flex-col">
-        <ButtonRow class="mx-auto mb-4 hidden sm:block" :game-started="cards.length" @start-game="startGame"
-          @next-turn="nextTurn"></ButtonRow>
+        <ButtonRow
+          class="mx-auto mb-4 hidden sm:block"
+          :game-started="cards.length"
+          @start-game="startGame"
+          @next-turn="nextTurn"
+        ></ButtonRow>
         <div class="relative z-0 m-auto h-full w-96">
           <Cards :cards="cards" @category-entered="trimCards"></Cards>
         </div>
@@ -23,8 +34,12 @@
   </main>
 
   <div class="fixed bottom-0 left-0 z-0 flex h-16 w-full pb-4 sm:hidden">
-    <ButtonRow class="mx-auto mb-1 sm:hidden" :game-started="cards.length" @start-game="startGame"
-      @next-turn="nextTurn"></ButtonRow>
+    <ButtonRow
+      class="mx-auto mb-1 sm:hidden"
+      :game-started="cards.length"
+      @start-game="startGame"
+      @next-turn="nextTurn"
+    ></ButtonRow>
   </div>
 </template>
 
@@ -129,7 +144,7 @@ function randomNumberInRange(min: number, max: number): number {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 * {
   @apply touch-manipulation;
 }
