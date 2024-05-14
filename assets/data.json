@@ -317,7 +317,7 @@
     },
     "i": {
       "name": "Moves starting with I",
-      "description": "Moves that have a title starting with the letter I. (Note: \"Isolation\" isn't a move. It's a category.)"
+      "description": "Moves that have a title starting with the letter I. (Note: \"Isolation\" and \"Interlock\" aren't moves. They are category.)"
     },
     "j": {
       "name": "Moves starting with J",
