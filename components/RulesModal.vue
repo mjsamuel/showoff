@@ -1,7 +1,6 @@
 <template>
   <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-900 bg-opacity-75"></div>
-
     <div class="fixed inset-0 z-50 w-screen overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
         @click.self="$emit('closeModal')">
@@ -25,9 +24,7 @@
             </div>
             <!-- Modal body -->
             <div class="space-y-4 p-4">
-              <div class="text-base leading-relaxed text-black dark:text-gray-300">
-                <MDC :value="rules" />
-              </div>
+              <div class="text-base leading-relaxed text-black dark:text-gray-300" v-html="rulesContent"></div>
             </div>
           </div>
         </div>
@@ -37,7 +34,10 @@
 </template>
 
 <script lang="ts" setup>
+import MarkdownIt from "markdown-it";
 import rules from "./assets/rules.md?raw";
+const markdown = new MarkdownIt();
+const rulesContent = ref<string>(markdown.render(rules));
 </script>
 
 <style lang="postcss" scoped>
