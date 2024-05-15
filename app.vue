@@ -11,7 +11,9 @@
   <main class="sm:flex sm:justify-center">
     <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
       <header class="m-5 flex">
-        <h1 class="grow text-4xl font-extrabold dark:text-white">Showoff</h1>
+        <h1 class="grow text-4xl font-extrabold dark:text-white">
+          <button @click="reset">Showoff</button>
+        </h1>
         <HamburgerButton
           class="h-9 w-9 text-gray-800 dark:text-white"
           @click="showRules = true"
@@ -137,6 +139,10 @@ function trimCards() {
     return;
   }
   cards.value.shift();
+}
+
+function reset() {
+  cards.value = [];
 }
 
 function randomNumberInRange(min: number, max: number): number {
