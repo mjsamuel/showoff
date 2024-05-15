@@ -1,5 +1,5 @@
 <template>
-  <div class="flex text-sm font-medium">
+  <div class="flex text-sm font-medium select-none">
     <template v-if="gameStarted">
       <SolidButton :class="'h-full w-32'" @click="$emit('nextTurn')">Next turn</SolidButton>
     </template>
