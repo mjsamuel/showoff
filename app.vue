@@ -33,16 +33,16 @@
         </div>
       </div>
     </div>
-  </main>
 
-  <div class="fixed bottom-0 left-0 z-0 flex h-16 w-full pb-4 sm:hidden">
-    <ButtonRow
-      class="mx-auto mb-1 sm:hidden"
-      :game-started="cards.length"
-      @start-game="startGame"
-      @next-turn="nextTurn"
-    ></ButtonRow>
-  </div>
+    <div class="fixed bottom-0 left-0 z-0 flex h-16 w-full pb-4 sm:hidden">
+      <ButtonRow
+        class="mx-auto mb-1 sm:hidden"
+        :game-started="cards.length"
+        @start-game="startGame"
+        @next-turn="nextTurn"
+      ></ButtonRow>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
