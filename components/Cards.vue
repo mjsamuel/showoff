@@ -1,6 +1,7 @@
 <template>
   <TransitionGroup enter-active-class="transition-all duration-300 ease-out" enter-from-class="translate-y-full"
-    @before-enter="showModifier = false" @after-enter="onAfterCategoryEnter">
+    leave-active-class="transition-opacity duration-300" leave-to-class="opacity-0" @before-enter="showModifier = false"
+    @after-enter="onAfterCategoryEnter">
     <div v-for="(card, index) in cards" :key="card.category.key"
       class="absolute flex max-h-fit min-h-full w-full flex-col rounded-t-xl border-black bg-gray-100 shadow-xl">
       <!-- category card -->
