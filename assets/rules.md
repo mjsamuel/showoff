@@ -71,7 +71,6 @@ cardistry!
 1. The game ends when you run out of lives.
 1. Think of solo mode as a way to practice for Showoff battles and test your own
    skills and knowledge independently!
-1. About
 
 # About
 
