@@ -14,11 +14,11 @@
         <h1 class="grow text-4xl font-extrabold dark:text-white">
           <button @click="reset">Showoff</button>
         </h1>
-        <HamburgerButton
-          class="h-9 w-9 text-gray-800 dark:text-white"
+        <QuestionButton
+          class="h-6 w-6 text-gray-800 dark:text-white"
           @click="showRules = true"
         >
-        </HamburgerButton>
+        </QuestionButton>
       </header>
 
       <div class="flex grow flex-col">
