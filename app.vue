@@ -4,8 +4,10 @@
     <RulesModal v-if="showRules" @close-modal="showRules = false"></RulesModal>
   </Transition>
 
-  <main class="sm:flex sm:justify-center">
-    <NuxtPage />
+  <main class="sm:flex sm:justify-center ">
+    <div class="h-[calc(100dvh)] sm:w-[80%] lg:w-[50%]">
+      <NuxtPage />
+    </div>
   </main>
 </template>
 
@@ -15,3 +17,9 @@ useHead({
   bodyAttrs: { class: "bg-white dark:bg-gray-900" },
 });
 </script>
+
+<style lang="postcss">
+* {
+  @apply touch-manipulation;
+}
+</style>

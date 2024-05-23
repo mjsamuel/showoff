@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[calc(100dvh)] flex-col sm:w-[80%] lg:w-[50%]">
+  <div class="flex flex-col h-full">
     <header class="m-5 flex">
       <h1 class="grow text-4xl font-extrabold dark:text-white">
         <button @click="reset">Showoff</button>
@@ -122,9 +122,3 @@ function randomNumberInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 </script>
-
-<style lang="postcss">
-* {
-  @apply touch-manipulation;
-}
-</style>
