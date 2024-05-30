@@ -4,9 +4,9 @@
     @before-enter="showModifier = false" @after-enter="onAfterCategoryEnter">
     <div v-for="(card, index) in cards" :key="card.category.key" class="absolute h-full">
       <!-- category card -->
-      <div :class="`flex w-160 ${!!card.modifier ? '' : 'justify-center'} h-full items-center`">
+      <div :class="`w-160 flex ${!!card.modifier ? '' : 'justify-center'} h-full items-center`">
         <div
-          :class="`h-fit min-h-96 w-80 flex-col rounded-xl border-black bg-gray-100 shadow-xl p-5 ${card.category.rotation < 0 ? '-' : ''}rotate-${Math.abs(card.category.rotation)}`">
+          :class="`h-fit min-h-96 w-80 flex-col rounded-xl border-black bg-gray-100 p-5 shadow-xl ${card.category.rotation < 0 ? '-' : ''}rotate-${Math.abs(card.category.rotation)}`">
           <p class="mb-1 text-3xl font-semibold text-black">
             {{ card.category.name }}
           </p>

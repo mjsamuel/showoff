@@ -8,16 +8,18 @@
       </QuestionButton>
     </header>
 
-    <div class="flex grow flex-col">
-      <SolidButton class="mx-auto  hidden sm:mt-20 sm:block" @click="nextTurn">Next turn</SolidButton>
-      <div class="relative z-0 m-auto block h-full w-96 items-center sm:hidden">
-        <CardsMobile :cards="cards" @category-entered="trimCards"></CardsMobile>
-      </div>
-      <div class="relative z-0 mb-28 sm:flex hidden h-full w-full justify-center mt-">
+    <div class="grow flex-col hidden sm:flex">
+      <SolidButton class="mx-auto mt-4" @click="nextTurn">Next turn</SolidButton>
+      <div class="relative z-0 mb-28 h-full w-full justify-center flex">
         <CardsDesktop :cards="cards" @category-entered="trimCards"></CardsDesktop>
       </div>
     </div>
+
+    <div class="relative z-0 m-auto block h-full w-96 items-center sm:hidden">
+      <CardsMobile :cards="cards" @category-entered="trimCards"></CardsMobile>
+    </div>
   </div>
+
 
   <div class="fixed bottom-0 z-0 flex h-16 w-full pb-4 sm:hidden">
     <SolidButton class="mx-auto mb-1 sm:hidden" @click="nextTurn">Next turn</SolidButton>
@@ -25,10 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import jsonData from "./assets/data.json";
+import jsonData from "../assets/data.json";
 import { onMounted } from "vue";
-
-const emit = defineEmits(["showRules"]);
 
 type Prompt = {
   name: string;
@@ -42,15 +42,16 @@ type Challenge = {
   modifier?: KeyedPrompt & { rotation: number };
 };
 
+const emit = defineEmits(["showRules"]);
+
 const data = {
   categories: preparePrompts(jsonData.categories),
   modifiers: preparePrompts(jsonData.modifiers),
 };
+const cards = ref<Challenge[]>([]);
 
 let playWithModifiers = false;
 let modifierProbability = 0;
-
-const cards = ref<Challenge[]>([]);
 
 onMounted(() => {
   document.addEventListener("keydown", (event) => {
@@ -75,10 +76,16 @@ onMounted(() => {
 });
 
 function nextTurn() {
-  const category = { ...getPrompt("categories"), rotation: randomNumberInRange(-2, 2, [0]) };
+  const category = {
+    ...getPrompt("categories"),
+    rotation: randomNumberInRange(-2, 2, [0]),
+  };
   let modifier;
   if (playWithModifiers && Math.random() < modifierProbability) {
-    modifier = { ...getPrompt("modifiers", category.excluded), rotation: randomNumberInRange(-2, 2, [0]) };
+    modifier = {
+      ...getPrompt("modifiers", category.excluded),
+      rotation: randomNumberInRange(-2, 2, [0]),
+    };
     modifier.rotation = randomNumberInRange(-2, 2);
   }
   cards.value.push({ category, modifier });
@@ -122,7 +129,11 @@ function trimCards() {
   cards.value.shift();
 }
 
-function randomNumberInRange(min: number, max: number, excluded: number[] = []): number {
+function randomNumberInRange(
+  min: number,
+  max: number,
+  excluded: number[] = [],
+): number {
   const random = Math.floor(Math.random() * (max - min + 1)) + min;
   if (excluded.includes(random)) {
     return randomNumberInRange(min, max, excluded);

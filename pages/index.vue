@@ -3,7 +3,8 @@
     <div class="mb-36 flex w-full flex-col items-center">
       <h1 class="text-6xl font-extrabold dark:text-white">Showoff</h1>
       <h2 class="mb-4">
-        <button class="font-semibold text-gray-900 underline decoration-blue-600 dark:decoration-green-400 dark:text-white"
+        <button
+          class="font-semibold text-gray-900 underline decoration-blue-600 dark:decoration-green-400 dark:text-white"
           @click="$emit('showRules')">
           How to play
         </button>
@@ -44,14 +45,18 @@
 </template>
 
 <script setup lang="ts">
+type GameType = "standard" | "advanced"
 const emit = defineEmits(["showRules"]);
-const gameType = ref<"standard" | "advanced">("standard");
+const gameType = ref<GameType>("standard");
 const modifierProbability = ref(50);
 
 async function playGame() {
-  let query = { gameType: gameType.value };
-  if (gameType.value === "advanced") {
-    query = { ...query, modifierProbability: modifierProbability.value };
+  let query: { gameType: GameType, modifierProbability?: number } = {
+    gameType: gameType.value,
+    modifierProbability: modifierProbability.value
+  };
+  if (gameType.value === "standard") {
+    delete query["modifierProbability"];
   }
   await navigateTo({ path: "/play", query });
 }
