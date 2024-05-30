@@ -57,6 +57,11 @@ onMounted(() => {
   });
 
   const params = { ...useRoute().query };
+
+  if (!params.gameType) {
+    navigateTo({ path: "/" });
+  }
+
   if (params.gameType === "advanced") {
     playWithModifiers = true;
     modifierProbability =
