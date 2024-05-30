@@ -51,11 +51,7 @@ const cards = ref<Card[]>([]);
 
 onMounted(() => {
   document.addEventListener("keydown", (event) => {
-    if (event.key === "?") {
-      showRules.value = !showRules.value;
-    } else if (event.key === "Escape") {
-      showRules.value = false;
-    } else if (event.key === "n" && cards.value.length) {
+    if (event.key === "n") {
       nextTurn();
     }
   });
@@ -63,9 +59,8 @@ onMounted(() => {
   const params = { ...useRoute().query };
   if (params.gameType === "advanced") {
     playWithModifiers = true;
-    // clamp the modifier probability between 10% and 100%
     modifierProbability =
-      Math.min(Math.max(Number(params.modifierProbability), 10), 100) / 100;
+      clamp(Number(params.modifierProbability), 10, 100) / 100;
   }
 
   nextTurn();
@@ -120,5 +115,9 @@ function trimCards() {
 
 function randomNumberInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
 }
 </script>

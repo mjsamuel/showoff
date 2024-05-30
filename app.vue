@@ -5,8 +5,8 @@
   </Transition>
 
   <main class="sm:flex sm:justify-center ">
-   <div class="h-[calc(100dvh)] sm:w-[80%] lg:w-[50%]">
-      <NuxtPage @show-rules="showRules = true"/>
+    <div class="h-[calc(100dvh)] sm:w-[80%] lg:w-[50%]">
+      <NuxtPage @show-rules="showRules = true" />
     </div>
   </main>
 </template>
@@ -16,7 +16,18 @@ useHead({
   title: "Showoff",
   bodyAttrs: { class: "bg-white dark:bg-gray-900" },
 });
+
 const showRules = ref(false);
+
+onMounted(() => {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "?") {
+      showRules.value = !showRules.value;
+    } else if (event.key === "Escape") {
+      showRules.value = false;
+    }
+  });
+});
 </script>
 
 <style lang="postcss">

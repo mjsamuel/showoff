@@ -8,7 +8,7 @@
           How to play
         </button>
       </h2>
-      <form class="flex w-[80%] sm:w-[50%] flex-col space-y-8 rounded-xl bg-gray-100 p-6 shadow-xl">
+      <form class="flex w-[80%] sm:w-[60%] flex-col space-y-8 rounded-xl bg-gray-100 p-6 shadow-xl">
         <fieldset id="game-type">
           <legend class="mb-2 block text-sm font-medium text-gray-900">
             Game type:
@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
 const emit = defineEmits(["showRules"]);
-
 const gameType = ref<"standard" | "advanced">("standard");
 const modifierProbability = ref(50);
 
