@@ -8,8 +8,13 @@ export default {
     "./app.vue",
     "./error.vue",
   ],
+  safelist: [{ pattern: /rotate-./ }],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        160: "40rem",
+      },
+    },
   },
   plugins: [],
 };
