@@ -4,7 +4,7 @@
       <h1 class="grow text-4xl font-extrabold dark:text-white">
         <button @click="reset">Showoff</button>
       </h1>
-      <QuestionButton class="h-6 w-6 text-gray-800 dark:text-white" @click="showRules = true">
+      <QuestionButton class="h-6 w-6 text-gray-800 dark:text-white" @click="$emit('showRules')">
       </QuestionButton>
     </header>
 
@@ -27,6 +27,8 @@
 import jsonData from "./assets/data.json";
 import { onMounted } from "vue";
 
+const emit = defineEmits(["showRules"]);
+
 type Prompt = {
   name: string;
   description?: string | string[];
@@ -47,7 +49,6 @@ const data = {
 };
 let playWithModifiers = true;
 
-const showRules = ref(false);
 const cards = ref<Card[]>([]);
 
 onMounted(() => {
