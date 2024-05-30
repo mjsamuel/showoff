@@ -1,16 +1,15 @@
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex h-full flex-col">
     <header class="m-5 flex">
       <h1 class="grow text-4xl font-extrabold dark:text-white">
-        <button @click="reset">Showoff</button>
+        <button @click="navigateTo({ path: '/' })">Showoff</button>
       </h1>
       <QuestionButton class="h-6 w-6 text-gray-800 dark:text-white" @click="$emit('showRules')">
       </QuestionButton>
     </header>
 
     <div class="flex grow flex-col">
-      <ButtonRow class="mx-auto mb-4 hidden sm:block" :game-started="cards.length" @start-game="startGame"
-        @next-turn="nextTurn"></ButtonRow>
+      <SolidButton class="mx-auto mb-4 hidden sm:block" @click="nextTurn">Next turn</SolidButton>
       <div class="relative z-0 m-auto h-full w-96">
         <Cards :cards="cards" @category-entered="trimCards"></Cards>
       </div>
@@ -18,8 +17,7 @@
   </div>
 
   <div class="fixed bottom-0 left-0 z-0 flex h-16 w-full pb-4 sm:hidden">
-    <ButtonRow class="mx-auto mb-1 sm:hidden" :game-started="cards.length" @start-game="startGame"
-      @next-turn="nextTurn"></ButtonRow>
+    <SolidButton class="mx-auto mb-1 sm:hidden" @click="nextTurn">Next turn</SolidButton>
   </div>
 </template>
 
@@ -41,13 +39,13 @@ type Card = {
   modifier?: KeyedPrompt;
 };
 
-const MODIFIER_PROBABILITY = 0.3;
-
 const data = {
   categories: preparePrompts(jsonData.categories),
   modifiers: preparePrompts(jsonData.modifiers),
 };
-let playWithModifiers = true;
+
+let playWithModifiers = false;
+let modifierProbability = 0;
 
 const cards = ref<Card[]>([]);
 
@@ -61,17 +59,22 @@ onMounted(() => {
       nextTurn();
     }
   });
-});
 
-function startGame(useModifiers: boolean) {
-  playWithModifiers = useModifiers;
+  const params = { ...useRoute().query };
+  if (params.gameType === "advanced") {
+    playWithModifiers = true;
+    // clamp the modifier probability between 10% and 100%
+    modifierProbability =
+      Math.min(Math.max(Number(params.modifierProbability), 10), 100) / 100;
+  }
+
   nextTurn();
-}
+});
 
 function nextTurn() {
   const category = getPrompt("categories");
   let modifier;
-  if (playWithModifiers && Math.random() < MODIFIER_PROBABILITY) {
+  if (playWithModifiers && Math.random() < modifierProbability) {
     modifier = getPrompt("modifiers", category.excluded);
   }
   cards.value.push({ category, modifier });
@@ -113,10 +116,6 @@ function trimCards() {
     return;
   }
   cards.value.shift();
-}
-
-function reset() {
-  cards.value = [];
 }
 
 function randomNumberInRange(min: number, max: number): number {

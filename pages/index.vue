@@ -8,7 +8,7 @@
           How to play
         </button>
       </h2>
-      <form class="flex w-[80%] flex-col space-y-8 rounded-xl bg-white p-6 shadow-xl">
+      <form class="flex w-[80%] sm:w-[50%] flex-col space-y-8 rounded-xl bg-gray-100 p-6 shadow-xl">
         <fieldset id="game-type">
           <legend class="mb-2 block text-sm font-medium text-gray-900">
             Game type:
@@ -29,15 +29,15 @@
 
         <div>
           <label for="modifier-chance" class="mb-2 block text-sm font-medium text-gray-900">
-            Modifier probability: {{ modifierProb }}%
+            Modifier probability: {{ modifierProbability }}%
           </label>
-          <input id="modifier-chance" type="range" min="0" max="100" step="10" v-model="modifierProb"
+          <input id="modifier-chance" type="range" min="10" max="100" step="10" v-model="modifierProbability"
             class="accent-gradient-to-br h-2 w-full rounded-lg bg-gray-200 from-green-400 to-blue-600"
             :disabled="gameType === 'standard'" />
         </div>
 
         <div class="flex">
-          <SolidButton :class="'m-auto h-full w-32'" @click="">Play</SolidButton>
+          <SolidButton :class="'m-auto h-full w-32'" @click="playGame()">Play</SolidButton>
         </div>
       </form>
     </div>
@@ -46,6 +46,15 @@
 
 <script setup lang="ts">
 const emit = defineEmits(["showRules"]);
-const modifierProb = ref(50);
+
 const gameType = ref<"standard" | "advanced">("standard");
+const modifierProbability = ref(50);
+
+async function playGame() {
+  let query = { gameType: gameType.value };
+  if (gameType.value === "advanced") {
+    query = { ...query, modifierProbability: modifierProbability.value };
+  }
+  await navigateTo({ path: "/play", query });
+}
 </script>
