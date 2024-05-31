@@ -33,7 +33,7 @@
             }}
           </label>
           <input id="modifier-chance" type="range" min="0" max="100" step="10" v-model="form.modifierProbability"
-            class="accent-gradient-to-br h-2 w-full rounded-lg bg-gray-200 from-green-400 to-blue-600"
+            class="accent-gradient-to-br h-3 w-full rounded-lg bg-gray-200 from-green-400 to-blue-600"
             :disabled="!form.playWithModifiers" />
         </div>
 
@@ -56,7 +56,7 @@ const emit = defineEmits(["showRules"]);
 const form = ref<Form>({
   allowRepeats: true,
   playWithModifiers: true,
-  modifierProbability: 50,
+  modifierProbability: 30,
 });
 
 async function playGame() {
