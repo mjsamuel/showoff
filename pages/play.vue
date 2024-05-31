@@ -8,9 +8,9 @@
       </QuestionButton>
     </header>
 
-    <div class="grow flex-col hidden sm:flex">
+    <div class="hidden grow flex-col sm:flex">
       <SolidButton class="mx-auto mt-4" @click="nextTurn">Next turn</SolidButton>
-      <div class="relative z-0 mb-28 h-full w-full justify-center flex">
+      <div class="relative z-0 mb-28 flex h-full w-full justify-center">
         <CardsDesktop :cards="cards" @category-entered="trimCards"></CardsDesktop>
       </div>
     </div>
@@ -19,7 +19,6 @@
       <CardsMobile :cards="cards" @category-entered="trimCards"></CardsMobile>
     </div>
   </div>
-
 
   <div class="fixed bottom-0 z-0 flex h-16 w-full pb-4 sm:hidden">
     <SolidButton class="mx-auto mb-1 sm:hidden" @click="nextTurn">Next turn</SolidButton>
@@ -50,7 +49,7 @@ const data = {
 };
 const cards = ref<Challenge[]>([]);
 
-let playWithModifiers = false;
+let allowRepeats = false;
 let modifierProbability = 0;
 
 onMounted(() => {
@@ -60,30 +59,25 @@ onMounted(() => {
     }
   });
 
-  const params = { ...useRoute().query };
-
-  if (!params.gameType) {
-    navigateTo({ path: "/" });
+  const query = { ...useRoute().query };
+  if (query.modifierOpts === "choice") {
+  } else if (query.modifierOpts) {
+    modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
   }
-
-  if (params.gameType === "advanced") {
-    playWithModifiers = true;
-    modifierProbability =
-      clamp(Number(params.modifierProbability), 10, 100) / 100;
-  }
+  allowRepeats = query.repetition == "true";
 
   nextTurn();
 });
 
 function nextTurn() {
   const category = {
-    ...getPrompt("categories"),
+    ...getPrompt("categories", undefined, !allowRepeats),
     rotation: randomNumberInRange(-2, 2, [0]),
   };
   let modifier;
-  if (playWithModifiers && Math.random() < modifierProbability) {
+  if (modifierProbability && Math.random() < modifierProbability) {
     modifier = {
-      ...getPrompt("modifiers", category.excluded),
+      ...getPrompt("modifiers", category.excluded, !allowRepeats),
       rotation: randomNumberInRange(-2, 2, [0]),
     };
     modifier.rotation = randomNumberInRange(-2, 2);
