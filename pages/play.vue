@@ -9,7 +9,12 @@
     </header>
 
     <div class="hidden grow flex-col sm:flex">
-      <SolidButton class="mx-auto mt-4" @click="nextTurn">Next turn</SolidButton>
+      <div class="mx-auto mt-4">
+        <SolidButton @click="nextTurn" class="h-full w-28">Next turn</SolidButton>
+        <SolidButton v-if="dealersChoice" :disabled="!canRequestModifier" @click="getModifier"
+          class="ml-3 h-full w-28">+ Modifier
+        </SolidButton>
+      </div>
       <div class="relative z-0 mb-28 flex h-full w-full justify-center">
         <CardsDesktop :cards="cards" @category-entered="trimCards"></CardsDesktop>
       </div>
@@ -20,8 +25,13 @@
     </div>
   </div>
 
-  <div class="fixed bottom-0 z-0 flex h-16 w-full pb-4 sm:hidden">
-    <SolidButton class="mx-auto mb-1 sm:hidden" @click="nextTurn">Next turn</SolidButton>
+  <div class="fixed bottom-0 z-0 flex h-16 w-full justify-center pb-4 sm:hidden">
+    <div>
+      <SolidButton @click="nextTurn" class="h-full w-32">Next turn</SolidButton>
+      <SolidButton v-if="dealersChoice" :disabled="!canRequestModifier" @click="getModifier" class="ml-3 h-full w-32">
+        + Modifier
+      </SolidButton>
+    </div>
   </div>
 </template>
 
@@ -35,7 +45,6 @@ type Prompt = {
   excluded?: string[];
 };
 type KeyedPrompt = Prompt & { key: string };
-
 type Challenge = {
   category: KeyedPrompt & { rotation: number };
   modifier?: KeyedPrompt & { rotation: number };
@@ -47,10 +56,17 @@ const data = {
   categories: preparePrompts(jsonData.categories),
   modifiers: preparePrompts(jsonData.modifiers),
 };
-const cards = ref<Challenge[]>([]);
 
-let allowRepeats = false;
+const cards = ref<Challenge[]>([]);
+const canRequestModifier = ref<boolean>(false);
+
+const query = { ...useRoute().query };
+let allowRepeats = query.repetition === "true";
 let modifierProbability = 0;
+let dealersChoice = query.modifierOpts === "choice";
+if (!dealersChoice && query.modifierOpts) {
+  modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
+}
 
 onMounted(() => {
   document.addEventListener("keydown", (event) => {
@@ -58,14 +74,6 @@ onMounted(() => {
       nextTurn();
     }
   });
-
-  const query = { ...useRoute().query };
-  if (query.modifierOpts === "choice") {
-  } else if (query.modifierOpts) {
-    modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
-  }
-  allowRepeats = query.repetition == "true";
-
   nextTurn();
 });
 
@@ -74,15 +82,34 @@ function nextTurn() {
     ...getPrompt("categories", undefined, !allowRepeats),
     rotation: randomNumberInRange(-2, 2, [0]),
   };
+
   let modifier;
   if (modifierProbability && Math.random() < modifierProbability) {
     modifier = {
       ...getPrompt("modifiers", category.excluded, !allowRepeats),
       rotation: randomNumberInRange(-2, 2, [0]),
     };
-    modifier.rotation = randomNumberInRange(-2, 2);
   }
+
+  if (dealersChoice) {
+    canRequestModifier.value = true;
+  }
+
   cards.value.push({ category, modifier });
+}
+
+function getModifier() {
+  const currentChallenge = cards.value[0];
+  const modifier = {
+    ...getPrompt(
+      "modifiers",
+      currentChallenge.category.excluded,
+      !allowRepeats,
+    ),
+    rotation: randomNumberInRange(-2, 2, [0]),
+  };
+  currentChallenge.modifier = modifier;
+  canRequestModifier.value = false;
 }
 
 function getPrompt(
