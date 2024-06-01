@@ -8,7 +8,7 @@
       </QuestionButton>
     </header>
 
-    <div class="hidden grow flex-col sm:flex">
+    <div :class="`hidden grow flex-col sm:flex ${animating ? 'overflow-y-clip' : ''}`">
       <div class="mx-auto mt-4">
         <SolidButton @click="nextTurn" class="h-full w-28">Next turn</SolidButton>
         <SolidButton v-if="dealersChoice" :disabled="!canRequestModifier" @click="getModifier"
@@ -16,12 +16,12 @@
         </SolidButton>
       </div>
       <div class="relative z-0 mb-28 flex h-full w-full justify-center">
-        <CardsDesktop :cards="cards" @category-entered="trimCards"></CardsDesktop>
+        <CardsDesktop :cards="cards" @started-animating="animationsStarted" @finished-animating="animationsFinished"></CardsDesktop>
       </div>
     </div>
 
     <div class="relative z-0 m-auto block h-full w-96 items-center sm:hidden">
-      <CardsMobile :cards="cards" @category-entered="trimCards"></CardsMobile>
+      <CardsMobile :cards="cards" @finished-animating="animationsFinished"></CardsMobile>
     </div>
   </div>
 
@@ -59,11 +59,12 @@ const data = {
 
 const cards = ref<Challenge[]>([]);
 const canRequestModifier = ref<boolean>(false);
+const animating = ref<boolean>(false);
 
 const query = { ...useRoute().query };
 let allowRepeats = query.repetition === "true";
-let modifierProbability = 0;
 let dealersChoice = query.modifierOpts === "choice";
+let modifierProbability = 0;
 if (!dealersChoice && query.modifierOpts) {
   modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
 }
@@ -143,11 +144,13 @@ function preparePrompts(prompts: Record<string, Prompt>) {
   });
 }
 
-function trimCards() {
-  if (cards.value.length <= 1) {
-    return;
-  }
-  cards.value.shift();
+function animationsStarted() {
+  animating.value = true;
+}
+
+function animationsFinished() {
+  animating.value = false;
+  cards.value = cards.value.slice(-1);
 }
 
 function randomNumberInRange(

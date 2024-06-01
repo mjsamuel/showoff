@@ -1,7 +1,7 @@
 <template>
   <TransitionGroup enter-active-class="transition-all duration-300 ease-out transform-gpu"
     enter-from-class="translate-y-full" leave-active-class="transition-opacity duration-300" leave-to-class="opacity-0"
-    @before-enter="showModifier = false" @after-enter="onAfterCategoryEnter">
+    @before-enter="onBeforeCategoryEnter" @after-enter="onAfterCategoryEnter">
     <div v-for="(card, index) in cards" :key="card.category.key" class="absolute h-full">
       <!-- category card -->
       <div :class="`w-160 flex ${!!card.modifier ? '' : 'justify-center'} h-full items-center`">
@@ -12,7 +12,8 @@
           </p>
           <p class="text-xl font-medium text-black" v-html="card.category.description"></p>
         </div>
-        <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="translate-y-full">
+        <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="translate-y-full"
+          @before-enter="animationCounter++" @after-enter="animationCounter--">
           <!-- modifier card -->
           <div v-if="!!card.modifier && (index < cards.length - 1 || showModifier)"
             :class="`h-fit min-h-96 w-80 rounded-xl border-black bg-gray-700 p-5 shadow-xl ${card.modifier.rotation < 0 ? '-' : ''}rotate-${Math.abs(card.modifier.rotation)}`">
@@ -31,13 +32,28 @@
 
 <script setup lang="ts">
 const props = defineProps(["cards"]);
-const emit = defineEmits(["categoryEntered"]);
+const emit = defineEmits(["startedAnimating", "finishedAnimating"]);
 const showModifier = ref(false);
+const animationCounter = ref(0);
+
+function onBeforeCategoryEnter() {
+  showModifier.value = false;
+  animationCounter.value++;
+}
 
 function onAfterCategoryEnter() {
   showModifier.value = true;
-  emit("categoryEntered");
+  animationCounter.value--;
 }
+
+watch(() => animationCounter.value, (count) => {
+  if (animationCounter.value > 0) {
+    emit("startedAnimating");
+  } else if (animationCounter.value === 0) {
+    emit("finishedAnimating");
+  }
+})
+
 </script>
 
 <style lang="postcss" scoped>
