@@ -8,20 +8,16 @@
       </QuestionButton>
     </header>
 
-    <div :class="`hidden grow flex-col sm:flex ${animating ? 'overflow-y-clip' : ''}`">
-      <div class="mx-auto mt-4">
+    <div :class="`grow flex-col flex  ${animating ? 'overflow-y-clip' : ''}`">
+      <div class="mx-auto mt-4 hidden sm:block">
         <SolidButton @click="nextTurn" class="h-full w-28">Next turn</SolidButton>
-        <SolidButton v-if="dealersChoice" :disabled="!canRequestModifier" @click="getModifier"
-          class="ml-3 h-full w-28">+ Modifier
+        <SolidButton v-if="dealersChoice" :disabled="!canRequestModifier" @click="getModifier" class="ml-3 h-full w-28">
+          + Modifier
         </SolidButton>
       </div>
-      <div class="relative z-0 mb-28 flex h-full w-full justify-center">
-        <CardsDesktop :cards="cards" @started-animating="animationsStarted" @finished-animating="animationsFinished"></CardsDesktop>
-      </div>
-    </div>
-
-    <div class="relative z-0 m-auto block h-full w-96 items-center sm:hidden">
-      <CardsMobile :cards="cards" @finished-animating="animationsFinished"></CardsMobile>
+      <Cards :cards="cards" @started-animating="animationsStarted"
+        @finished-animating="animationsFinished">
+      </Cards>
     </div>
   </div>
 
