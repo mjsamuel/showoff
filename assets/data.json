@@ -162,7 +162,7 @@
       "description": "Moves by cardists hailing from any part of France."
     },
     "xcm": {
-      "name": "Superhandz/Handlordz moves (XCM)",
+      "name": "Superhandz / Handlordz moves (XCM)",
       "description": [
         "<ol>Moves:",
         "<li>created by De'vo vom Schattenreich or Jerry Cestkowski,</li>",
@@ -189,7 +189,7 @@
     },
     "theory11": {
       "name": "Theory11 Moves",
-      "description": "Original moves by cardists that have been published through Theory11. (Note: this only refers to major releases, so moves from The Wire are not allowed.)"
+      "description": "Original moves by cardists that have been published through Theory11. Moves from the Theory11 Marketplace/The Wire are allowed."
     },
     "interlocks": {
       "name": "Interlock moves",
@@ -227,13 +227,9 @@
       "name": "Vietnamese moves",
       "description": "Moves created by cardists hailing from Vietnam."
     },
-    "israeli": {
-      "name": "Israeli moves",
-      "description": "Moves created by cardists hailing from Israel."
-    },
-    "chinese": {
-      "name": "Chinese moves",
-      "description": "Moves created by cardists hailing from China."
+    "middle-east": {
+      "name": "Middle Eastern moves",
+      "description": "Moves created by cardists hailing from the Middle East."
     },
     "flips": {
       "name": "Flips",
@@ -445,7 +441,7 @@
     },
     "lev-slev-kev": {
       "name": "Moves by Levin, Slevin, or Kevin",
-      "description": "Moves created by either Tobias Levin, Eliot Slevin, or Kevin Ho."
+      "description": "Moves created by either Tobias Levin, Eliot Slevin, or any cardist named 'Kevin'."
     },
     "food": {
       "name": "Moves named after food",
@@ -454,10 +450,6 @@
     "female": {
       "name": "Moves by female cardists",
       "description": "Moves created by any female cardist."
-    },
-    "taiwanese": {
-      "name": "Taiwanese moves",
-      "description": "Moves created by cardists hailing from Taiwan."
     },
     "bae": {
       "name": "Moves that are \"bae\"",
@@ -487,11 +479,11 @@
     },
     "moty": {
       "name": "Move of the Year nominees",
-      "description": "Any move that has been nominated for the Flourish/Move of the Year award at any past or current Cardistry-Con."
+      "description": "Any move that has been nominated for the 'Flourish/Move of the Year' award at any past or current Cardistry-Con or Cardistry Experience conference."
     },
     "voty": {
       "name": "Video of the Year moves",
-      "description": "Any move that has appeared in any past or current Video of the Year Cardistry-Con Award-winning video."
+      "description": "Any move that has appeared in any past or current 'Video of the Year' Cardistry-Con of Cardistry Experience Award-winning video."
     },
     "books": {
       "name": "Moves from books",
