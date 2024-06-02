@@ -15,9 +15,7 @@
           + Modifier
         </SolidButton>
       </div>
-      <Cards :cards="cards" @started-animating="animationsStarted"
-        @finished-animating="animationsFinished">
-      </Cards>
+      <Cards :cards="cards" @started-animating="animationsStarted" @finished-animating="animationsFinished" />
     </div>
   </div>
 
