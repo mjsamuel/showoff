@@ -13,21 +13,21 @@
 
 <script setup lang="ts">
 useHead({
-  title: "Showoff",
-  bodyAttrs: { class: "bg-white dark:bg-gray-900" },
-});
+  title: 'Showoff',
+  bodyAttrs: { class: 'bg-white dark:bg-gray-900' },
+})
 
-const showRules = ref(false);
+const showRules = ref(false)
 
 onMounted(() => {
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "?") {
-      showRules.value = !showRules.value;
-    } else if (event.key === "Escape") {
-      showRules.value = false;
+  document.addEventListener('keydown', (event) => {
+    if (event.key === '?') {
+      showRules.value = !showRules.value
+    } else if (event.key === 'Escape') {
+      showRules.value = false
     }
-  });
-});
+  })
+})
 </script>
 
 <style lang="postcss">
