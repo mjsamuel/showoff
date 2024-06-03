@@ -42,68 +42,70 @@
 </template>
 
 <script setup lang="ts">
-import jsonData from '../assets/data.json'
+import jsonData from '../assets/data.json';
 
-const emit = defineEmits(['showRules'])
-const cards = ref<Challenge[]>([])
-const canRequestModifier = ref<boolean>(false)
+const emit = defineEmits(['showRules']);
+const cards = ref<Challenge[]>([]);
+const canRequestModifier = ref<boolean>(false);
 
 type Prompt = {
-  name: string
-  description?: string | string[]
-  excluded?: string[]
-}
-type KeyedPrompt = Prompt & { key: string }
+  name: string;
+  description?: string | string[];
+  excluded?: string[];
+  key?: string;
+};
 type Challenge = {
-  category: KeyedPrompt & { rotation: number }
-  modifier?: KeyedPrompt & { rotation: number }
-}
+  turn: number;
+  category: Prompt & { rotation: number };
+  modifier?: Prompt & { rotation: number };
+};
 
 const data = {
   categories: preparePrompts(jsonData.categories),
   modifiers: preparePrompts(jsonData.modifiers),
-}
+};
 
-const query = { ...useRoute().query }
-let allowRepeats = query.repetition === 'true'
-let dealersChoice = query.modifierOpts === 'choice'
-let modifierProbability = 0
+let query = { ...useRoute().query };
+let allowRepeats = query.repetition === 'true';
+let dealersChoice = query.modifierOpts === 'choice';
+let modifierProbability = 0;
+let turn: number = 0;
 if (!dealersChoice && query.modifierOpts) {
-  modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100
+  modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
 }
 
 onMounted(() => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'n') {
-      nextTurn()
+      nextTurn();
     }
-  })
-  nextTurn()
-})
+  });
+  nextTurn();
+});
 
 function nextTurn() {
   const category = {
     ...getPrompt('categories', undefined, !allowRepeats),
     rotation: randomNumberInRange(-2, 2, [0]),
-  }
+  };
 
-  let modifier
+  let modifier;
   if (modifierProbability && Math.random() < modifierProbability) {
     modifier = {
       ...getPrompt('modifiers', category.excluded, !allowRepeats),
       rotation: randomNumberInRange(-2, 2, [0]),
-    }
+    };
   }
 
   if (dealersChoice) {
-    canRequestModifier.value = true
+    canRequestModifier.value = true;
   }
 
-  cards.value.push({ category, modifier })
+  cards.value.push({ turn: turn++, category, modifier });
 }
 
 function getModifier() {
-  const currentChallenge = cards.value[0]
+  const currentChallenge = cards.value[0];
   const modifier = {
     ...getPrompt(
       'modifiers',
@@ -111,9 +113,9 @@ function getModifier() {
       !allowRepeats
     ),
     rotation: randomNumberInRange(-2, 2, [0]),
-  }
-  currentChallenge.modifier = modifier
-  canRequestModifier.value = false
+  };
+  currentChallenge.modifier = modifier;
+  canRequestModifier.value = false;
 }
 
 function getPrompt(
@@ -121,37 +123,37 @@ function getPrompt(
   excluded?: string[],
   deletePrompt = false
 ) {
-  let prompts = data[type]
+  let prompts = data[type];
   if (prompts.length === 0) {
-    prompts = preparePrompts(jsonData[type] as Record<string, Prompt>)
+    prompts = preparePrompts(jsonData[type] as Record<string, Prompt>);
   }
 
-  let prompt: KeyedPrompt | null = null
+  let prompt: Prompt | null = null;
   while (!prompt) {
-    const index = randomNumberInRange(0, prompts.length - 1)
+    const index = randomNumberInRange(0, prompts.length - 1);
     if (excluded?.includes(prompts[index].key)) {
-      continue
+      continue;
     }
-    prompt = deletePrompt ? prompts.splice(index, 1).at(0)! : prompts[index]
+    prompt = deletePrompt ? prompts.splice(index, 1).at(0)! : prompts[index];
   }
 
-  return prompt
+  return prompt;
 }
 
 function preparePrompts(prompts: Record<string, Prompt>) {
   return Object.entries(prompts).map(([key, prompt]) => {
     if (prompt.description instanceof Array) {
-      prompt.description = prompt.description.join('')
+      prompt.description = prompt.description.join('');
     }
-    return { key, ...prompt }
-  })
+    return { key, ...prompt };
+  });
 }
 
 function trimCards() {
   if (cards.value.length <= 1) {
-    return
+    return;
   }
-  cards.value.shift()
+  cards.value.shift();
 }
 
 function randomNumberInRange(
@@ -159,14 +161,14 @@ function randomNumberInRange(
   max: number,
   excluded: number[] = []
 ): number {
-  const random = Math.floor(Math.random() * (max - min + 1)) + min
+  const random = Math.floor(Math.random() * (max - min + 1)) + min;
   if (excluded.includes(random)) {
-    return randomNumberInRange(min, max, excluded)
+    return randomNumberInRange(min, max, excluded);
   }
-  return random
+  return random;
 }
 
 function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max)
+  return Math.min(Math.max(value, min), max);
 }
 </script>
