@@ -19,10 +19,13 @@
           :disabled="!canRequestModifier"
           @click="getModifier"
           class="ml-3 h-full w-28">
-          + Modifier
+          + Moifier
         </SolidButton>
       </div>
-      <Cards :cards="cards" @category-entered="trimCards" />
+      <Cards
+        ref="cardsComponent"
+        :cards="cards"
+        @category-entered="trimCards" />
     </div>
   </div>
 
@@ -47,6 +50,7 @@ import jsonData from '../assets/data.json';
 const emit = defineEmits(['showRules']);
 const cards = ref<Challenge[]>([]);
 const canRequestModifier = ref<boolean>(false);
+const cardsComponent = ref();
 
 type Prompt = {
   name: string;
@@ -56,8 +60,8 @@ type Prompt = {
 };
 type Challenge = {
   turn: number;
-  category: Prompt & { rotation: number };
-  modifier?: Prompt & { rotation: number };
+  category: Prompt & { rotation?: number };
+  modifier?: Prompt & { rotation?: number };
 };
 
 const data = {
@@ -69,7 +73,7 @@ let query = { ...useRoute().query };
 let allowRepeats = query.repetition === 'true';
 let dealersChoice = query.modifierOpts === 'choice';
 let modifierProbability = 0;
-let turn: number = 0;
+let turn: number = 1;
 if (!dealersChoice && query.modifierOpts) {
   modifierProbability = clamp(Number(query.modifierOpts), 10, 100) / 100;
 }
@@ -84,17 +88,11 @@ onMounted(() => {
 });
 
 function nextTurn() {
-  const category = {
-    ...getPrompt('categories', undefined, !allowRepeats),
-    rotation: randomNumberInRange(-2, 2, [0]),
-  };
+  const category = getPrompt('categories', undefined, !allowRepeats);
 
   let modifier;
   if (modifierProbability && Math.random() < modifierProbability) {
-    modifier = {
-      ...getPrompt('modifiers', category.excluded, !allowRepeats),
-      rotation: randomNumberInRange(-2, 2, [0]),
-    };
+    modifier = getPrompt('modifiers', category.excluded, !allowRepeats);
   }
 
   if (dealersChoice) {
@@ -106,16 +104,11 @@ function nextTurn() {
 
 function getModifier() {
   const currentChallenge = cards.value[0];
-  const modifier = {
-    ...getPrompt(
-      'modifiers',
-      currentChallenge.category.excluded,
-      !allowRepeats
-    ),
-    rotation: randomNumberInRange(-2, 2, [0]),
-  };
-  currentChallenge.modifier = modifier;
+  currentChallenge.modifier = getPrompt( 'modifiers', currentChallenge.category.excluded, !allowRepeats);
   canRequestModifier.value = false;
+  setTimeout(() => {
+    cardsComponent.value.showModifier = true;
+  }, 1);
 }
 
 function getPrompt(
@@ -137,7 +130,10 @@ function getPrompt(
     prompt = deletePrompt ? prompts.splice(index, 1).at(0)! : prompts[index];
   }
 
-  return prompt;
+  return {
+    ...prompt,
+    rotation: randomNumberInRange(-2, 2, [0]),
+  };
 }
 
 function preparePrompts(prompts: Record<string, Prompt>) {

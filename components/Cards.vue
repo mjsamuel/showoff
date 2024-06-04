@@ -34,11 +34,11 @@
             v-if="card.modifier"
             class="h-full w-96 rounded-t-xl border-black bg-gray-700 p-5
               shadow-xl sm:h-fit sm:min-h-96 sm:w-80 sm:rounded-xl
-              transition-transform ease-out translate-y-[150%]"
+              transition-transform ease-out"
             :class="[
               {
-                'translate-y-0':
-                  showModifier || index !== cards.length - 1,
+                'translate-y-[150%]':
+                  !showModifier && index === cards.length - 1,
               },
               'duration-' + DURATION_PER_CARD,
               getRotationClass(card.modifier.rotation),
@@ -62,22 +62,28 @@ const emit = defineEmits(['categoryEntered']);
 const showModifier = ref<boolean>(false);
 const animationCounter = ref<number>(0);
 const DURATION_PER_CARD = 300;
+defineExpose({ showModifier });
 
 function onBeforeCategoryEnter() {
   showModifier.value = false;
   animationCounter.value++;
 }
 
-function onAfterCategoryEnter() {
+function onAfterCategoryEnter(el) {
+  emit('categoryEntered');
+  const card = props.cards.find((card) => card.turn === el.__vnode.key);
+  if (!card.modifier) {
+    animationCounter.value--;
+    return;
+  }
   showModifier.value = true;
   setTimeout(() => {
     animationCounter.value--;
   }, DURATION_PER_CARD);
-  emit('categoryEntered');
 }
 
 function getRotationClass(rotation: number): string {
-  return `sm:${rotation < 0 && '-'}rotate-${Math.abs(rotation)}`;
+  return `sm:${rotation < 0 ? '-' : ''}rotate-${Math.abs(rotation)}`;
 }
 </script>
 
