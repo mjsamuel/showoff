@@ -12,6 +12,7 @@
       <div
         v-for="(card, index) in cards"
         :key="card.turn"
+        :data-card-index="card.turn"
         class="absolute h-full sm:w-full w-fit flex justify-center">
         <div
           class="sm:w-160 flex h-full w-full flex-col items-center rounded-t-xl
@@ -71,7 +72,8 @@ function onBeforeCategoryEnter() {
 
 function onAfterCategoryEnter(el) {
   emit('categoryEntered');
-  const card = props.cards.find((card) => card.turn === el.__vnode.key);
+  const index = Number(el.getAttribute('data-card-index'));
+  const card = props.cards.find((c) =>  c.turn === index);
   if (!card.modifier) {
     animationCounter.value--;
     return;
