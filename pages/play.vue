@@ -19,7 +19,7 @@
           :disabled="!canRequestModifier"
           @click="getModifier"
           class="ml-3 h-full w-28">
-          + Moifier
+          + Modifier
         </SolidButton>
       </div>
       <Cards
