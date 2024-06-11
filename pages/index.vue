@@ -53,7 +53,7 @@ type Form = {
 const emit = defineEmits(['showRules'])
 const form = ref<Form>({
   allowRepeats: true,
-  playWithModifiers: true,
+  playWithModifiers: false,
   modifierProbability: 30,
 })
 

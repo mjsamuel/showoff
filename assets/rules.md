@@ -3,11 +3,12 @@ cardistry!
 
 # Here's how to play Showoff:
 
-1. Start by dealing three cards in front of you. These are your 'lives'
+1. Each player starts by dealing three cards in front of them. These are their
+   "lives".
 1. Have each player cut to a random card in the deck. The person with the
    highest-valued card starts first (Aces are high. If you cut to a Joker, you
    get to cut again. Also, if you're using a deck without values... then too
-   bad!)
+   bad!).
 1. On each player's turn, tap/click the 'category'/'next turn' button to
    generate a random category. The player must now perform a move from that
    category to successfully complete their turn.
@@ -24,7 +25,7 @@ cardistry!
 # Modifiers
 
 1. With this optional mode activated, extra challenges are added into the game
-   at random in order to raise the stakes
+   at random in order to raise the stakes.
 1. On each turn, there's a chance that the move category will also be generated
    along with a 'modifier' below.
 1. If a modifier is added, then the player must fulfill the entire challenges's
