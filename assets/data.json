@@ -273,7 +273,11 @@
     },
     "sybil-variations": {
       "name": "Sybil Variations",
-      "description": "Variations of moves employing the 'Sybil' mechanic."
+      "description": "Variations of moves employing the 'Sybil' mechanic.",
+      "excluded": [
+        "exclude-cuts",
+        "no-hands"
+      ]
     },
     "brand": {
       "name": "Moves named after brands",
