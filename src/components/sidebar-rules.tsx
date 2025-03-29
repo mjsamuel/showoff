@@ -1,4 +1,6 @@
-import { Book } from "lucide-react";
+"use client";
+
+import { CircleHelp } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -6,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { RulesDialog } from "./rules-dialog";
 
 export function NavHowToPlay({ className }: Readonly<{ className?: string }>) {
   return (
@@ -13,9 +16,11 @@ export function NavHowToPlay({ className }: Readonly<{ className?: string }>) {
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Book /> How to play
-            </SidebarMenuButton>
+            <RulesDialog>
+              <SidebarMenuButton className="justify-center">
+                <CircleHelp /> How to play
+              </SidebarMenuButton>
+            </RulesDialog>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
