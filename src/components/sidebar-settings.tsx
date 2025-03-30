@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Checkbox } from "./ui/checkbox";
 import { Slider } from "./ui/slider";
-import React from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { AppContext } from "./app-provider";
 
 function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -18,16 +19,31 @@ function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
   );
 }
 
+const DEFAULT_MODIFIER_PROBABILITY = 25;
+
 export function NavGameSettings() {
-  const [repeat, setRepeat] = React.useState(false);
-  const [modifiers, setModifiers] = React.useState(false);
-  const [modifierProbability, setModifierProbability] = React.useState(25);
-  const modifierLabel = React.useMemo(() => {
-    if (modifierProbability === 0) {
+  const appContext = useContext(AppContext);
+  const [repeat, setRepeat] = useState(false);
+  const [modifiers, setModifiers] = useState(false);
+  const [probability, setProbability] = useState(DEFAULT_MODIFIER_PROBABILITY);
+  const [preCommitProbability, setPreCommitProbability] = useState(
+    DEFAULT_MODIFIER_PROBABILITY,
+  );
+  const probabilityLabel = useMemo(() => {
+    if (preCommitProbability === 0) {
       return "Player choice";
     }
-    return `${modifierProbability}%`;
-  }, [modifierProbability]);
+    return `${preCommitProbability}%`;
+  }, [preCommitProbability]);
+
+  useEffect(() => {
+    if (!appContext) return;
+    appContext.setSettings({
+      repeat,
+      modifiers,
+      modifierProbability: probability,
+    });
+  }, [repeat, modifiers, probability]);
 
   return (
     <SidebarGroup className="select-none">
@@ -57,14 +73,15 @@ export function NavGameSettings() {
           <AppSidebarItem>
             <div className="flex flex-col gap-4 h-12 w-full px-1">
               <div className="flex items-center space-x-2">
-                Modifier probability: {modifierLabel}
+                Modifier probability: {probabilityLabel}
               </div>
               <Slider
                 defaultValue={[50]}
                 max={100}
                 step={25}
-                value={[modifierProbability]}
-                onValueChange={(v) => setModifierProbability(v[0])}
+                value={[preCommitProbability]}
+                onValueChange={(v) => setPreCommitProbability(v[0])}
+                onValueCommit={(v) => setProbability(v[0])}
                 disabled={!modifiers}
               />
             </div>

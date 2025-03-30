@@ -19,8 +19,8 @@ export function RulesDialog({
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] h-[60vh] p-0 overflow-hidden [&>button:last-child]:hidden">
-        <div className="overflow-y-auto p-6">
-          <DialogHeader className="mb-4">
+        <div className="overflow-y-auto p-6 flex flex-col gap-4">
+          <DialogHeader>
             <DialogTitle>How to play</DialogTitle>
             <DialogDescription>
               Showoff is a game created for cardists to test their skill and
@@ -52,7 +52,7 @@ function RulesOrderedList({
 function RulesUnorderedList({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <ul className="list-disc ml-5 flex flex-col gap-1">{children}</ul>;
+  return <ul className="list-disc ml-4 flex flex-col gap-1">{children}</ul>;
 }
 
 function Rules() {
@@ -67,9 +67,14 @@ function Rules() {
           </li>
           <li>
             Have each player cut to a random card in the deck. The person with
-            the highest-valued card starts first (Aces are high. If you cut to a
-            Joker, you get to cut again. Also, if you&apos;re using a deck
-            without values... then too bad!).
+            the highest-valued card starts first
+            <RulesUnorderedList>
+              <li>Aces are high.</li>
+              <li>If you cut to a Joker, you get to cut again.</li>
+              <li>
+                If you&apos;re using a deck without values... then too bad!
+              </li>
+            </RulesUnorderedList>
           </li>
           <li>
             On each player&apos;s turn, tap/click the
@@ -80,16 +85,16 @@ function Rules() {
           <li>
             If the player:
             <RulesUnorderedList>
-              <li>Drops any cards</li>
+              <li>Drops any cards,</li>
               <li>
                 Repeats a move that has been done by anyone else before in that
-                particular game
+                particular game,
               </li>
               <li>
-                Can&apos;t think of any move to perform that fits that category
+                Can&apos;t think of any move to perform that fits that category,
               </li>
             </RulesUnorderedList>
-            ...then they remove one of their cards in front of them, losing one
+            then they remove one of their cards in front of them, losing one
             &apos;life&apos; and ending their turn.
           </li>
           <li>

@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { NavGameSettings } from "./sidebar-settings";
 import { NavPlayers } from "./sidebar-players";
 import { NavHowToPlay } from "./sidebar-rules";
+import React from "react";
 
 export function AppSidebar() {
   return (
