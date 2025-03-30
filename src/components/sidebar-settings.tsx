@@ -55,8 +55,9 @@ export function NavGameSettings() {
               id="repeat"
               checked={repeat}
               onCheckedChange={(v) => setRepeat(v as boolean)}
+              className=" hover:cursor-pointer"
             />
-            <label htmlFor="repeat" className="grow">
+            <label htmlFor="repeat" className="grow hover:cursor-pointer">
               Repeat categories/modifiers
             </label>
           </AppSidebarItem>
@@ -65,8 +66,9 @@ export function NavGameSettings() {
               id="modifiers"
               checked={modifiers}
               onCheckedChange={(v) => setModifiers(v as boolean)}
+              className=" hover:cursor-pointer"
             />
-            <label htmlFor="modifiers" className="grow">
+            <label htmlFor="modifiers" className="grow hover:cursor-pointer">
               Play with modifiers
             </label>
           </AppSidebarItem>

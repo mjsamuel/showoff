@@ -18,7 +18,7 @@ export function AppSidebar() {
         </h1>
       </SidebarHeader>
       <SidebarContent>
-        <div className="mx-4 mt-3  flex gap-3">
+        <div className="mx-4 my-3 flex gap-3">
           <Button className="grow">Join room</Button>
           <Button variant="outline" className="grow">
             Create room
