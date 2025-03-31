@@ -11,7 +11,7 @@ useGLTF.preload("/playing_card.glb");
 
 export default function Home() {
   return (
-    <div className="w-full h-full relative touch-none">
+    <div className="w-full h-full relative touch-none select-none">
       <Canvas shadows camera={{ position: [0, 0, 25], fov: 30 }}>
         {/* <Canvas shadows camera={{ position: [5, -5, 50], fov: 30, rotation: [0, -1, 0] }}> */}
         {/* <Environment preset="apartment" background blur={0.8} /> */}
