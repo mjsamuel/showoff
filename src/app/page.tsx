@@ -1,61 +1,32 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Box, Environment, Lightformer } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
+import { Box, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { Button } from "@/components/ui/button";
 import * as THREE from "three";
 
+useGLTF.preload("/playing_card.glb");
+
 export default function Home() {
   return (
     <div className="w-full h-full relative touch-none">
-      <Canvas camera={{ position: [0, 0, 20], fov: 25 }}>
-        <Suspense>
-          <Physics interpolate gravity={[0, 0, -100]} timeStep={1 / 60}>
-            {/* Floor */}
-            <RigidBody type="fixed" restitution={0}>
-              <Box position={[0, 0, -5]} args={[10, 10, 5]}>
-                <meshBasicMaterial opacity={0} transparent={true} />
-              </Box>
-            </RigidBody>
-            {/* Card */}
-            <Card position={[0, 0, 10]} />
-            <Card position={[3, 3, 8]} />
-          </Physics>
-
-          <Environment background>
-            <meshBasicMaterial opacity={0} transparent={true} />
-            <Lightformer
-              intensity={2}
-              color="white"
-              position={[0, -1, 5]}
-              rotation={[0, 0, Math.PI / 3]}
-              scale={[100, 0.1, 1]}
-            />
-            <Lightformer
-              intensity={3}
-              color="white"
-              position={[-1, -1, 1]}
-              rotation={[0, 0, Math.PI / 3]}
-              scale={[100, 0.1, 1]}
-            />
-            <Lightformer
-              intensity={3}
-              color="white"
-              position={[1, 1, 1]}
-              rotation={[0, 0, Math.PI / 3]}
-              scale={[100, 0.1, 1]}
-            />
-            <Lightformer
-              intensity={10}
-              color="white"
-              position={[-10, 0, 14]}
-              rotation={[0, Math.PI / 2, Math.PI / 3]}
-              scale={[100, 10, 1]}
-            />
-          </Environment>
-        </Suspense>
+      <Canvas shadows camera={{ position: [0, 0, 25], fov: 30 }}>
+        {/* <Canvas shadows camera={{ position: [5, -5, 50], fov: 30, rotation: [0, -1, 0] }}> */}
+        {/* <Environment preset="apartment" background blur={0.8} /> */}
+        <directionalLight position={[0, 0, 50]} intensity={1.2} castShadow />
+        <Physics gravity={[0, 0, -50]} timeStep={1 / 120}>
+          {/* Floor */}
+          <RigidBody type="fixed" restitution={0}>
+            <Box position={[0, 0, -5]} args={[20, 20, 5]}>
+              <meshBasicMaterial opacity={0} transparent={true} />
+            </Box>
+          </RigidBody>
+          {/* Card */}
+          <Card position={[0, 0, 10]} />
+          <Card position={[2, 2, 8]} />
+        </Physics>
       </Canvas>
       <div className="absolute bottom-0 w-full flex justify-center">
         <Button className="mb-4">Next turn</Button>
@@ -71,9 +42,14 @@ function Card({
   const [dragged, drag] = useState<THREE.Vector3 | false>(false);
   const [hovered, hover] = useState(false);
   const card = useRef<RapierRigidBody>(null);
-  const vec = new THREE.Vector3();
-  const dir = new THREE.Vector3();
+  const vec = new THREE.Vector3(),
+    dir = new THREE.Vector3();
 
+  // eslint-disable-next-line
+  const test: any = useGLTF("/playing_card.glb");
+  console.log(test.materials["Material.001"].map);
+
+  // const { nodes, materials } =
   useEffect(() => {
     if (hovered) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
@@ -102,10 +78,16 @@ function Card({
       ref={card}
       type={dragged ? "kinematicPosition" : "dynamic"}
       restitution={0.25}
-      friction={0.01}
+      friction={0.1}
+      colliders="cuboid"
+      rotation={[Math.PI / 2, 0, 0]}
+      mass={0.5}
     >
-      <Box
-        args={[2.5, 3.5, 0.07]}
+      <mesh
+        castShadow
+        receiveShadow
+        scale={[2.5, 15, 3.5]}
+        geometry={test.nodes.Plane.geometry}
         onPointerOver={() => hover(true)}
         onPointerOut={() => hover(false)}
         // eslint-disable-next-line
@@ -114,6 +96,8 @@ function Card({
         )}
         // eslint-disable-next-line
         onPointerDown={(e: any) => (
+          e.stopPropagation(),
+          e.nativeEvent.stopImmediatePropagation(),
           e.target.setPointerCapture(e.pointerId),
           drag(
             new THREE.Vector3()
@@ -122,8 +106,13 @@ function Card({
           )
         )}
       >
-        <meshStandardMaterial color={color || "white"} />
-      </Box>
+        <meshStandardMaterial
+          color={color || "white"}
+          metalness={0.2}
+          roughness={0.1}
+          envMapIntensity={1}
+        />
+      </mesh>
     </RigidBody>
   );
 }
