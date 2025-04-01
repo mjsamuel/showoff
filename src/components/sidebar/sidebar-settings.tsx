@@ -6,10 +6,10 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { Checkbox } from "./ui/checkbox";
-import { Slider } from "./ui/slider";
+import { Checkbox } from "../ui/checkbox";
+import { Slider } from "../ui/slider";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { AppContext } from "./app-provider";
+import { AppContext } from "../app-provider";
 
 function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

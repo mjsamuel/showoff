@@ -1,12 +1,8 @@
 "use client";
 
+import { GameSettings } from "@/lib/game-engine";
 import { createContext, useState } from "react";
 
-export type GameSettings = {
-  repeat: boolean;
-  modifiers: boolean;
-  modifierProbability: number;
-};
 type AppContextProps = {
   settings: GameSettings;
   setSettings: (settings: GameSettings) => void;

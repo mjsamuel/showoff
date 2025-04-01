@@ -3,11 +3,11 @@ import {
   SidebarContent,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
-import { NavGameSettings } from "./sidebar-settings";
-import { NavPlayers } from "./sidebar-players";
-import { NavHowToPlay } from "./sidebar-rules";
+import { Button } from "../ui/button";
 import React from "react";
+import { NavPlayers } from "./sidebar-players";
+import { NavGameSettings } from "./sidebar-settings";
+import { NavHowToPlay } from "./sidebar-rules";
 
 export function AppSidebar() {
   return (
@@ -24,9 +24,9 @@ export function AppSidebar() {
             Create room
           </Button>
         </div>
-        <NavPlayers></NavPlayers>
-        <NavGameSettings></NavGameSettings>
-        <NavHowToPlay className="mt-auto"></NavHowToPlay>
+        <NavPlayers />
+        <NavGameSettings />
+        <NavHowToPlay className="mt-auto" />
       </SidebarContent>
     </Sidebar>
   );
