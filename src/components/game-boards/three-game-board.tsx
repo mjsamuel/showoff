@@ -41,7 +41,6 @@ function Card({
 
   // eslint-disable-next-line
   const test: any = useGLTF("/playing_card.glb");
-  console.log(test.materials["Material.001"].map);
 
   // const { nodes, materials } =
   useEffect(() => {
