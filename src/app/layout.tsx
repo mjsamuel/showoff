@@ -1,8 +1,11 @@
+import "./globals.css";
 import type { Metadata } from "next";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+
 import App from "@/components/app-provider";
 
 export const metadata: Metadata = {
@@ -30,6 +33,7 @@ export default function RootLayout({
               <main className="w-full">{children}</main>
             </App>
           </SidebarProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

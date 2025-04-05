@@ -18,6 +18,8 @@ type Collection = {
   played: Set<PromptKey>;
 };
 
+type SystemMessage = "history.cleared";
+
 export class GameEngine {
   settings: GameSettings;
   categories: Collection;
@@ -29,8 +31,25 @@ export class GameEngine {
     this.modifiers = this.processRawPromptData(rawData.modifiers);
   }
 
-  updateSettings(settings: GameSettings) {
-    this.settings = settings;
+  updateSettings(newSettings: GameSettings) {
+    const messages: SystemMessage[] = [];
+    const oldSettings = this.settings;
+
+    const repeatTurnedOn =
+      oldSettings.repeat === false && newSettings.repeat === true;
+    const hasPlayed =
+      !!this.categories.played.size || !!this.modifiers.played.size;
+    if (repeatTurnedOn) {
+      this.categories.played.clear();
+      this.modifiers.played.clear();
+    }
+
+    if (repeatTurnedOn && hasPlayed) {
+      messages.push("history.cleared");
+    }
+
+    this.settings = newSettings;
+    return messages;
   }
 
   nextTurn() {

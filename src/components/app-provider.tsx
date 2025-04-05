@@ -7,10 +7,15 @@ type AppContextProps = {
   settings: GameSettings;
   setSettings: (settings: GameSettings) => void;
 };
-export const AppContext = createContext<AppContextProps | null>(null);
+export const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
 export default function App({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useState({} as GameSettings);
+  const [settings, setSettings] = useState({
+    repeat: false,
+    modifiers: false,
+    modifierProbability: 25,
+  });
+
   return (
     <AppContext.Provider value={{ settings, setSettings }}>
       {children}
