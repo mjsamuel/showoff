@@ -11,23 +11,13 @@ import { Slider } from "../ui/slider";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../app-provider";
 
-function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <div className="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-hidden ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm">
-      {children}
-    </div>
-  );
-}
-
-const DEFAULT_MODIFIER_PROBABILITY = 25;
-
 export function NavGameSettings() {
-  const appContext = useContext(AppContext);
-  const [repeat, setRepeat] = useState(false);
-  const [modifiers, setModifiers] = useState(false);
-  const [probability, setProbability] = useState(DEFAULT_MODIFIER_PROBABILITY);
+  const { settings, setSettings } = useContext(AppContext);
+  const [repeat, setRepeat] = useState(settings.repeat);
+  const [modifiers, setModifiers] = useState(settings.modifiers);
+  const [probability, setProbability] = useState(settings.modifierProbability);
   const [preCommitProbability, setPreCommitProbability] = useState(
-    DEFAULT_MODIFIER_PROBABILITY,
+    settings.modifierProbability,
   );
   const probabilityLabel = useMemo(() => {
     if (preCommitProbability === 0) {
@@ -36,14 +26,24 @@ export function NavGameSettings() {
     return `${preCommitProbability}%`;
   }, [preCommitProbability]);
 
+  // settings begin with default values and pop-in once reading from local storage
   useEffect(() => {
-    if (!appContext) return;
-    appContext.setSettings({
-      repeat,
-      modifiers,
-      modifierProbability: probability,
-    });
-  }, [repeat, modifiers, probability]);
+    const { repeat, modifiers, modifierProbability } = settings;
+    setRepeat(repeat);
+    setModifiers(modifiers);
+    setPreCommitProbability(modifierProbability);
+    setProbability(modifierProbability);
+  }, [settings]);
+
+  useEffect(
+    () =>
+      setSettings({
+        repeat,
+        modifiers,
+        modifierProbability: probability,
+      }),
+    [repeat, modifiers, probability],
+  );
 
   return (
     <SidebarGroup className="select-none">
@@ -91,5 +91,13 @@ export function NavGameSettings() {
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
+  );
+}
+
+function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <div className="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-hidden ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm">
+      {children}
+    </div>
   );
 }
