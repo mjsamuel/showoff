@@ -50,28 +50,31 @@ export function NavGameSettings() {
       <SidebarGroupLabel>Game settings</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          <AppSidebarItem>
+          {/* Repeat checkbox */}
+          <AppSidebarItem
+            className="hover:cursor-pointer"
+            onClick={() => setRepeat(!repeat)}
+          >
             <Checkbox
               id="repeat"
               checked={repeat}
               onCheckedChange={(v) => setRepeat(v as boolean)}
-              className=" hover:cursor-pointer"
             />
-            <label htmlFor="repeat" className="grow hover:cursor-pointer">
-              Repeat categories/modifiers
-            </label>
+            <span>Repeat categories/modifiers</span>
           </AppSidebarItem>
-          <AppSidebarItem>
+          {/* Modifiers checkbox */}
+          <AppSidebarItem
+            className="hover:cursor-pointer"
+            onClick={() => setModifiers(!modifiers)}
+          >
             <Checkbox
               id="modifiers"
               checked={modifiers}
               onCheckedChange={(v) => setModifiers(v as boolean)}
-              className=" hover:cursor-pointer"
             />
-            <label htmlFor="modifiers" className="grow hover:cursor-pointer">
-              Play with modifiers
-            </label>
+            <span>Play with modifiers</span>
           </AppSidebarItem>
+          {/* Modifier probability slider */}
           <AppSidebarItem>
             <div className="flex flex-col gap-4 h-12 w-full px-1">
               <div className="flex items-center space-x-2">
@@ -94,9 +97,20 @@ export function NavGameSettings() {
   );
 }
 
-function AppSidebarItem({ children }: Readonly<{ children: React.ReactNode }>) {
+function AppSidebarItem({
+  children,
+  className,
+  onClick,
+}: Readonly<{
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}>) {
   return (
-    <div className="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-hidden ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm">
+    <div
+      onClick={onClick}
+      className={`${className} peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-hidden ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm`}
+    >
       {children}
     </div>
   );
