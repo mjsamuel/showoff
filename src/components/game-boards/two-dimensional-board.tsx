@@ -10,9 +10,11 @@ export default function TwoDimensionalBoard({
   return (
     <div className="relative flex h-full w-full items-center justify-center gap-4 p-4">
       {challenges.map((c) => (
-        <div key={c.category.key}>
-          {/* <div key={c.category.key} className="animate-card-entrance"> */}
-          <Card prompt={c.category} className="bg-gray-100 text-black" />
+        <div key={c.category.key} className="absolute">
+          <Card
+            prompt={c.category}
+            className="animate-card-entrance bg-gray-100 text-black"
+          />
         </div>
       ))}
     </div>
