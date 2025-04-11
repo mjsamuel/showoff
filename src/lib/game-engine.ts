@@ -8,14 +8,19 @@ export type GameSettings = {
 };
 
 type PromptKey = string;
+export type Prompt = {
+  key: PromptKey;
+  name: string;
+  description?: string;
+  excluded?: string[];
+};
 type Collection = {
-  prompts: {
-    key: PromptKey;
-    name: string;
-    description?: string;
-    excluded?: string[];
-  }[];
+  prompts: Prompt[];
   played: Set<PromptKey>;
+};
+export type Challenge = {
+  category: Prompt;
+  modifier?: Prompt;
 };
 
 type SystemMessage = "history.cleared";
