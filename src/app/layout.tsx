@@ -29,7 +29,7 @@ export default function RootLayout({
           <SidebarProvider defaultOpen>
             <App>
               <AppSidebar />
-              <SidebarTrigger className="fixed left-2 top-3 z-50" />
+              <SidebarTrigger className="fixed top-3 left-2 z-50" />
               <main className="w-full">{children}</main>
             </App>
           </SidebarProvider>

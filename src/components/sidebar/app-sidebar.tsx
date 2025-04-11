@@ -13,7 +13,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <h1 className="flex justify-center text-xl font-semibold mt-1">
+        <h1 className="mt-1 flex justify-center text-xl font-semibold">
           Showoff
         </h1>
       </SidebarHeader>

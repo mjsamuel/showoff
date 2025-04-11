@@ -18,8 +18,8 @@ export function RulesDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-[60vh] p-0 overflow-hidden [&>button:last-child]:hidden">
-        <div className="overflow-y-auto p-6 flex flex-col gap-4">
+      <DialogContent className="h-[60vh] overflow-hidden p-0 sm:max-w-[425px] [&>button:last-child]:hidden">
+        <div className="flex flex-col gap-4 overflow-y-auto p-6">
           <DialogHeader>
             <DialogTitle>How to play</DialogTitle>
             <DialogDescription>
@@ -40,24 +40,24 @@ export function RulesDialog({
 }
 
 function RulesTitle({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <h3 className="font-bold mb-1">{children}</h3>;
+  return <h3 className="mb-1 font-bold">{children}</h3>;
 }
 
 function RulesOrderedList({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <ol className="list-decimal ml-5 flex flex-col gap-1">{children}</ol>;
+  return <ol className="ml-5 flex list-decimal flex-col gap-1">{children}</ol>;
 }
 
 function RulesUnorderedList({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <ul className="list-disc ml-4 flex flex-col gap-1">{children}</ul>;
+  return <ul className="ml-4 flex list-disc flex-col gap-1">{children}</ul>;
 }
 
 function Rules() {
   return (
-    <div className="flex flex-col gap-4 text-sm ">
+    <div className="flex flex-col gap-4 text-sm">
       <div>
         <RulesTitle>Standard ruleset:</RulesTitle>
         <RulesOrderedList>

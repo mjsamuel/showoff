@@ -8,13 +8,12 @@ export default function TwoDimensionalBoard({
   challenges,
 }: Readonly<{ challenges: Challenge[] }>) {
   return (
-    <div className="w-full h-full justify-center flex items-center gap-4 p-4">
-      {challenges.map((c, index) => (
-        <Card
-          key={index}
-          prompt={c.category}
-          className="bg-gray-100 text-black"
-        />
+    <div className="relative flex h-full w-full items-center justify-center gap-4 p-4">
+      {challenges.map((c) => (
+        <div key={c.category.key}>
+          {/* <div key={c.category.key} className="animate-card-entrance"> */}
+          <Card prompt={c.category} className="bg-gray-100 text-black" />
+        </div>
       ))}
     </div>
   );
@@ -41,7 +40,7 @@ function Card({
     <div
       className={cn(
         className,
-        "h-fit p-6 static min-h-96 w-80 rounded-xl shadow-xl",
+        "static h-fit min-h-96 w-80 rounded-xl p-6 shadow-xl",
         rotationClasses[rotation],
       )}
     >

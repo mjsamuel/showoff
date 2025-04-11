@@ -15,7 +15,7 @@ export function NavPlayers({ className }: Readonly<{ className?: string }>) {
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-sidebar-foreground/70 ">
+            <SidebarMenuButton className="text-sidebar-foreground/70">
               <Plus /> Add player
             </SidebarMenuButton>
           </SidebarMenuItem>

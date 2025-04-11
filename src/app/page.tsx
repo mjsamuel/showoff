@@ -38,13 +38,13 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full h-full relative touch-none select-none">
+    <div className="relative h-full w-full touch-none select-none">
       {/* <div className="absolute top-0 font-bold text-3xl ml-4 mt-2">Showoff</div> */}
       {/* <ThreeGameBoard /> */}
       <TwoDimensionalBoard challenges={challenges} />
-      <div className="absolute bottom-0 w-full flex justify-center px-4 gap-3">
+      <div className="absolute bottom-0 flex w-full justify-center gap-3 px-4">
         <Button
-          className="grow h-12 md:h-8 md:flex-none w-28 mb-4"
+          className="mb-4 h-12 w-28 grow md:h-8 md:flex-none"
           onClick={nextTurn}
         >
           Next turn
@@ -52,7 +52,7 @@ export default function Home() {
         {showModifierButton && (
           <Button
             variant="outline"
-            className="grow h-12 md:h-8 md:flex-none w-28 mb-4"
+            className="mb-4 h-12 w-28 grow md:h-8 md:flex-none"
             onClick={() => {}}
           >
             Add modifier
