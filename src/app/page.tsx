@@ -26,6 +26,8 @@ export default function Home() {
     );
   }, [settings]);
 
+  useEffect(() => nextTurn(), []);
+
   function nextTurn() {
     const challenge = gameEngine.nextTurn();
     setChallenges((prev) => {
