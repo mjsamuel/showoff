@@ -653,7 +653,7 @@
   },
   "modifiers": {
     "opposite-hands": {
-      "name": "using the opposite hand(s)",
+      "name": "...using the opposite hand(s)",
       "description": [
         "The move must now be handled using the opposite hands that the ",
         "player normally uses - for example, if it's a cut where the right ",
@@ -662,13 +662,13 @@
       ]
     },
     "exclude-cuts": {
-      "name": "but it can't be a cut"
+      "name": "...but it can't be a cut"
     },
     "exclude-thumbs": {
-      "name": "but you can't use your thumbs"
+      "name": "...but you can't use your thumbs"
     },
     "deck-flip-finish": {
-      "name": "and finish with a T.G Deck Flip",
+      "name": "...and finish with a T.G Deck Flip",
       "description": [
         "After doing the round's move, the player must then execute a full ",
         "(360-degree) deck flip. If any cards are dropped or the move does ",
@@ -676,29 +676,29 @@
       ]
     },
     "without-looking": {
-      "name": "without looking",
+      "name": "...without looking",
       "description": [
         "The player must close their eyes and not peek while performing ",
         "the round's move"
       ]
     },
     "behind-the-back": {
-      "name": "behind your back",
+      "name": "...behind your back",
       "description": "The move must be performed with the card held behind the player's back"
     },
     "holding-cards-high": {
-      "name": "holding the cards high above your head",
+      "name": "...holding the cards high above your head",
       "description": "The move must be performed with both arms straight up above the player's head"
     },
     "three-times": {
-      "name": "3 times in a row",
+      "name": "...3 times in a row",
       "description": [
         "The move must be performed perfectly, without dropping any cards, ",
         "3 times in succession"
       ]
     },
     "maitain-order": {
-      "name": "without changing the order of the deck",
+      "name": "...without changing the order of the deck",
       "description": [
         "The player must choose and perform a move fitting the round's ",
         "category that subsequently does not change the order of the cards. ",
@@ -707,14 +707,14 @@
       ]
     },
     "backwards": {
-      "name": "backwards",
+      "name": "...backwards",
       "description": [
         "Sometimes almost impossible, the player must perform their move in ",
         "reverse, starting with the closer and ending with the opener."
       ]
     },
     "arms-crossed": {
-      "name": "with your arms crossed",
+      "name": "...with your arms crossed",
       "description": [
         "The player must perform their move with their arms crossed, one ",
         "over the other. Which arm they choose to cross over which is up to ",
@@ -723,17 +723,17 @@
       ]
     },
     "cards-sideways": {
-      "name": "with the cards sideways",
+      "name": "...with the cards sideways",
       "description": [
         "The player must perform the move they've chosen with the cards ",
         "oriented 90 degrees from how they normally handle them."
       ]
     },
     "three-from-category": {
-      "name": "and do 3 moves from this category"
+      "name": "...and do 3 moves from this category"
     },
     "upside-down": {
-      "name": "upside-down",
+      "name": "...upside-down",
       "description": [
         "The player must now perform the move in a way that it's presented ",
         "upside-down. This can involve lying on their back or holding the ",
@@ -742,7 +742,7 @@
       ]
     },
     "books": {
-      "name": "but it has to be from a book",
+      "name": "...but it has to be from a book",
       "description": [
         "Moves that have been published and taught in printed form. This ",
         "includes (lecture) notes and eBooks, as well as flourishes that have ",
@@ -753,7 +753,7 @@
       ]
     },
     "from-dead-format": {
-      "name": "but it has to be from a DVD/VHS",
+      "name": "...but it has to be from a DVD/VHS",
       "description": [
         "Moves that have been published and taught on DVD or VHS tapes. ",
         "This includes flourishes taught on magic DVD/VHS's; however, the ",
@@ -763,25 +763,25 @@
       ]
     },
     "elbows touching": {
-      "name": "with your elbows touching"
+      "name": "...with your elbows touching"
     },
     "tip-toes": {
-      "name": "standing on one leg, on your tip-toes"
+      "name": "...standing on one leg, on your tip-toes"
     },
     "exclude-index-fingers": {
-      "name": "but you can't use your index fingers"
+      "name": "...but you can't use your index fingers"
     },
     "exclude-middle-fingers": {
-      "name": "but you can't use your middle fingers"
+      "name": "...but you can't use your middle fingers"
     },
     "exclude-ring-fingers": {
-      "name": "but you can't use your ring fingers"
+      "name": "...but you can't use your ring fingers"
     },
     "no-hands": {
-      "name": "but you can't use your hands"
+      "name": "...but you can't use your hands"
     },
     "tear-a-card": {
-      "name": "and finish by tearing one card from your deck in half",
+      "name": "...and finish by tearing one card from your deck in half",
       "description": "Alternatively, lose 1 life and skip this turn"
     }
   }
