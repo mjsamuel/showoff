@@ -32,7 +32,7 @@ export default function Home() {
     const challenge = gameEngine.nextTurn();
     setChallenges((prev) => {
       const newChallenges = prev.concat(challenge);
-      if (newChallenges.length > 3) {
+      if (newChallenges.length > 50) {
         newChallenges.shift();
       }
       return newChallenges;
@@ -40,13 +40,13 @@ export default function Home() {
   }
 
   return (
-    <div className="relative h-full w-full touch-none select-none">
+    <div className="relative h-full w-full">
       {/* <div className="absolute top-0 font-bold text-3xl ml-4 mt-2">Showoff</div> */}
       {/* <ThreeGameBoard /> */}
       <TwoDimensionalBoard challenges={challenges} />
       <div className="absolute bottom-0 flex w-full justify-center gap-3 px-4">
         <Button
-          className="mb-4 h-12 w-28 grow md:h-8 md:flex-none"
+          className="z-50 mb-4 h-12 w-28 grow md:h-8 md:flex-none"
           onClick={nextTurn}
         >
           Next turn
@@ -54,7 +54,7 @@ export default function Home() {
         {showModifierButton && (
           <Button
             variant="outline"
-            className="mb-4 h-12 w-28 grow md:h-8 md:flex-none"
+            className="z-50 mb-4 h-12 w-28 grow md:h-8 md:flex-none"
             onClick={() => {}}
           >
             Add modifier

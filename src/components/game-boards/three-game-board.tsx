@@ -10,7 +10,11 @@ useGLTF.preload("/playing_card.glb");
 
 export default function ThreeGamBoard() {
   return (
-    <Canvas shadows camera={{ position: [0, 0, 25], fov: 30 }}>
+    <Canvas
+      shadows
+      camera={{ position: [0, 0, 25], fov: 30 }}
+      className="touch-none select-none"
+    >
       {/* <Canvas shadows camera={{ position: [5, -5, 50], fov: 30, rotation: [0, -1, 0] }}> */}
       {/* <Environment preset="apartment" background blur={0.8} /> */}
       <directionalLight position={[0, 0, 50]} intensity={1.2} castShadow />
