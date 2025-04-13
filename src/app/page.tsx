@@ -40,21 +40,17 @@ export default function Home() {
   }
 
   return (
-    <div className="relative h-full w-full">
-      {/* <div className="absolute top-0 font-bold text-3xl ml-4 mt-2">Showoff</div> */}
+    <div className="relative size-full">
       {/* <ThreeGameBoard /> */}
       <TwoDimensionalBoard challenges={challenges} />
-      <div className="absolute bottom-0 flex w-full justify-center gap-3 px-4">
-        <Button
-          className="z-50 mb-4 h-12 w-28 grow md:h-8 md:flex-none"
-          onClick={nextTurn}
-        >
+      <div className="absolute bottom-0 z-50 mb-5 flex h-14 w-full justify-center gap-3 px-12 md:h-10">
+        <Button className="h-full w-28 grow md:flex-none" onClick={nextTurn}>
           Next turn
         </Button>
         {showModifierButton && (
           <Button
-            variant="outline"
-            className="z-50 mb-4 h-12 w-28 grow md:h-8 md:flex-none"
+            variant="secondary"
+            className="h-full w-28 grow md:flex-none"
             onClick={() => {}}
           >
             Add modifier

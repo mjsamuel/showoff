@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Freckle+Face&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --font-freckle: "Freckle Face", system-ui;
+
   --animate-card-fade-in: cardFadeIn 0.25s ease-in-out;
   @keyframes cardFadeIn {
     from {

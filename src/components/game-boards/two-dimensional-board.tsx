@@ -3,8 +3,8 @@
 import { Challenge, Prompt } from "@/lib/game-engine";
 import { cn, getRandomNumberInRange } from "@/lib/utils";
 import { useState } from "react";
-import Delayed from "../delayed";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Delayed from "../delayed";
 
 export default function TwoDimensionalBoard({
   challenges,
@@ -12,7 +12,7 @@ export default function TwoDimensionalBoard({
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex size-full">
+    <div className="flex size-full overflow-hidden">
       {isMobile ? (
         <SmallScreenBoard challenges={challenges} />
       ) : (
@@ -26,7 +26,7 @@ function LargeScreenBoard({
   challenges,
 }: Readonly<{ challenges: Challenge[] }>) {
   return challenges.slice(-1).map((c) => (
-    <div key={c.category.key} className="m-auto flex flex-row items-center">
+    <div key={c.category.key} className="m-auto flex items-center">
       <Card
         prompt={c.category}
         className="animate-card-fade-in -z-20 min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl"
@@ -52,7 +52,7 @@ function SmallScreenBoard({
   challenges,
 }: Readonly<{ challenges: Challenge[] }>) {
   return challenges.slice(-1).map((c) => (
-    <div key={c.category.key} className="mx-8 size-full overflow-hidden">
+    <div key={c.category.key} className="mx-8 size-full pt-20">
       <div className="animate-card-slide-in flex size-full flex-col rounded-t-2xl bg-gray-100 shadow-xl">
         <Card
           prompt={c.category}
@@ -62,7 +62,7 @@ function SmallScreenBoard({
           <Delayed waitBeforeShow={500}>
             <Card
               prompt={c.modifier}
-              className="animate-card-slide-in z-20 size-full rounded-t-2xl bg-stone-800 text-white shadow-xl"
+              className="animate-card-slide-in z-20 size-full rounded-t-2xl bg-stone-800 pb-24 text-white shadow-xl"
             />
           </Delayed>
         )}
