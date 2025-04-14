@@ -5,7 +5,7 @@ import { createContext, useEffect, useState } from "react";
 
 const DEFAULT_GAME_SETTINGS: GameSettings = {
   repeat: false,
-  modifiers: false,
+  modifiers: true,
   modifierProbability: 25,
 };
 export const AppContext = createContext({
