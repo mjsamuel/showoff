@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
+import { Analytics } from "@vercel/analytics/react";
 import App from "@/components/app-provider";
 import Head from "next/head";
 
@@ -27,6 +28,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Analytics />
       <Head>
         <meta name="theme-color" content="#319197"></meta>
       </Head>
