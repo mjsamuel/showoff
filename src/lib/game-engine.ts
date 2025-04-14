@@ -71,6 +71,14 @@ export class GameEngine {
     return { category, modifier };
   }
 
+  getModifier(category: Prompt) {
+    return this.getPrompt(
+      this.modifiers,
+      this.settings.repeat,
+      category.excluded,
+    );
+  }
+
   private getPrompt(
     list: Collection,
     repeat: boolean,
