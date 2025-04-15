@@ -20,11 +20,13 @@ export default function App({ children }: { children: React.ReactNode }) {
   // to avoid hydration errors
   useEffect(() => {
     const storedSettings = window.localStorage.getItem("settings");
-    setSettings(
-      storedSettings !== null
-        ? JSON.parse(storedSettings)
-        : DEFAULT_GAME_SETTINGS,
-    );
+    let settings: GameSettings = DEFAULT_GAME_SETTINGS;
+    if (storedSettings) {
+      try {
+        settings = JSON.parse(storedSettings);
+      } catch (_) {}
+    }
+    setSettings(settings);
   }, []);
 
   // save settings to local storage when they change
