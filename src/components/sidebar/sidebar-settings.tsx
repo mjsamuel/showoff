@@ -8,16 +8,20 @@ import {
 } from "@/components/ui/sidebar";
 import { Checkbox } from "../ui/checkbox";
 import { Slider } from "../ui/slider";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { AppContext } from "../app-provider";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { AppContext, DEFAULT_GAME_SETTINGS } from "../app-provider";
+import { Skeleton } from "../ui/skeleton";
 
 export function NavGameSettings() {
-  const { settings, setSettings } = useContext(AppContext);
-  const [repeat, setRepeat] = useState(settings.repeat);
-  const [modifiers, setModifiers] = useState(settings.modifiers);
-  const [probability, setProbability] = useState(settings.modifierProbability);
+  const { state, setSettings } = useContext(AppContext);
+
+  const [repeat, setRepeat] = useState(DEFAULT_GAME_SETTINGS.repeat);
+  const [modifiers, setModifiers] = useState(DEFAULT_GAME_SETTINGS.modifiers);
+  const [probability, setProbability] = useState(
+    DEFAULT_GAME_SETTINGS.modifierProbability,
+  );
   const [preCommitProbability, setPreCommitProbability] = useState(
-    settings.modifierProbability,
+    DEFAULT_GAME_SETTINGS.modifierProbability,
   );
   const probabilityLabel = useMemo(() => {
     if (preCommitProbability === 0) {
@@ -26,24 +30,44 @@ export function NavGameSettings() {
     return `${preCommitProbability}%`;
   }, [preCommitProbability]);
 
-  // settings begin with default values and pop-in once reading from local storage
   useEffect(() => {
-    const { repeat, modifiers, modifierProbability } = settings;
+    if (state.status !== "ready") return;
+    const { repeat, modifiers, modifierProbability } = state.settings;
+
     setRepeat(repeat);
     setModifiers(modifiers);
     setPreCommitProbability(modifierProbability);
     setProbability(modifierProbability);
-  }, [settings]);
+  }, [state]);
 
-  useEffect(
-    () =>
-      setSettings({
-        repeat,
-        modifiers,
-        modifierProbability: probability,
-      }),
-    [repeat, modifiers, probability],
-  );
+  const settingsRef = useRef({ repeat, modifiers, probability });
+  useEffect(() => {
+    if (state.status !== "ready") return;
+
+    const prev = settingsRef.current;
+    const current = { repeat, modifiers, probability };
+    const hasChanged =
+      current.repeat !== prev.repeat ||
+      current.modifiers !== prev.modifiers ||
+      current.probability !== prev.probability;
+    if (!hasChanged) return;
+    settingsRef.current = current;
+
+    setSettings({
+      repeat,
+      modifiers,
+      modifierProbability: probability,
+    });
+  }, [repeat, modifiers, probability, state.status, setSettings]);
+
+  if (state.status !== "ready") {
+    return (
+      <SidebarGroup className="select-none">
+        <SidebarGroupLabel>Game settings</SidebarGroupLabel>
+        <Skeleton className="h-34" />
+      </SidebarGroup>
+    );
+  }
 
   return (
     <SidebarGroup className="select-none">
