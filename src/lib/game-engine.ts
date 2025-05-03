@@ -19,6 +19,7 @@ type Collection = {
   played: Set<PromptKey>;
 };
 export type Challenge = {
+  slug: string;
   category: Prompt;
   modifier?: Prompt;
 };
@@ -29,6 +30,7 @@ export class GameEngine {
   settings: GameSettings;
   categories: Collection;
   modifiers: Collection;
+  turn: number = 0;
 
   constructor(settings: GameSettings) {
     this.settings = settings;
@@ -45,8 +47,7 @@ export class GameEngine {
     const hasPlayed =
       !!this.categories.played.size || !!this.modifiers.played.size;
     if (repeatTurnedOn) {
-      this.categories.played.clear();
-      this.modifiers.played.clear();
+      this.reset();
     }
 
     if (repeatTurnedOn && hasPlayed) {
@@ -58,17 +59,21 @@ export class GameEngine {
   }
 
   nextTurn() {
+    this.turn += 1;
     const { repeat, modifiers, modifierProbability } = this.settings || {};
     const category = this.getPrompt(this.categories, repeat);
-    if (!modifiers) {
-      return { category };
-    }
+
     const modifierRequired = Math.random() < modifierProbability / 100;
-    if (!modifierRequired) {
-      return { category };
+    if (!modifiers || !modifierRequired) {
+      return { category, slug: `${this.turn}-${category.key}` };
     }
+
     const modifier = this.getPrompt(this.modifiers, repeat, category.excluded);
-    return { category, modifier };
+    return {
+      category,
+      modifier,
+      slug: `${this.turn}-${category.key}-${modifier.key}`,
+    };
   }
 
   getModifier(category: Prompt) {
@@ -109,6 +114,12 @@ export class GameEngine {
     }
 
     return prompt;
+  }
+
+  private reset() {
+    this.categories.played.clear();
+    this.modifiers.played.clear();
+    this.turn = 0;
   }
 
   private processRawPromptData(

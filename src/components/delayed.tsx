@@ -12,9 +12,7 @@ export default function Delayed({
   const [isShown, setIsShown] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsShown(true);
-    }, waitBeforeShow);
+    const timer = setTimeout(() => setIsShown(true), waitBeforeShow);
     return () => clearTimeout(timer);
   }, [waitBeforeShow]);
 

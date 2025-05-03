@@ -7,7 +7,7 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 import { Analytics } from "@vercel/analytics/react";
-import App from "@/components/app-provider";
+import SettingsProvider from "@/components/settings-provider";
 import Head from "next/head";
 
 export const metadata: Metadata = {
@@ -40,11 +40,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SidebarProvider defaultOpen>
-            <App>
+            <SettingsProvider>
               <SidebarTrigger className="fixed top-4 left-2 z-50 size-9" />
               <AppSidebar />
               <main className="w-full">{children}</main>
-            </App>
+            </SettingsProvider>
           </SidebarProvider>
           <Toaster />
         </ThemeProvider>

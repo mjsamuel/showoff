@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,8 +10,11 @@ import React from "react";
 import { NavPlayers } from "./sidebar-players";
 import { NavGameSettings } from "./sidebar-settings";
 import { NavHowToPlay } from "./sidebar-rules";
+import { toast } from "sonner";
 
 export function AppSidebar() {
+  const handleClick = () => toast("Coming soon!");
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -19,8 +24,10 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <div className="mx-4 my-3 flex gap-3">
-          <Button className="grow">Join room</Button>
-          <Button variant="outline" className="grow">
+          <Button className="grow" onClick={handleClick}>
+            Join room
+          </Button>
+          <Button variant="outline" className="grow" onClick={handleClick}>
             Create room
           </Button>
         </div>

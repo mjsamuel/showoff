@@ -8,59 +8,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Checkbox } from "../ui/checkbox";
 import { Slider } from "../ui/slider";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { AppContext, DEFAULT_GAME_SETTINGS } from "../app-provider";
+import { useContext, useState } from "react";
+import { SettingsContext } from "../settings-provider";
 import { Skeleton } from "../ui/skeleton";
 
 export function NavGameSettings() {
-  const { state, setSettings } = useContext(AppContext);
+  const [settings, setSettings] = useContext(SettingsContext);
+  const [prevSettings, setPrevSettings] = useState(settings);
+  const [preCommitProbability, setPreCommitProbability] = useState(0);
 
-  const [repeat, setRepeat] = useState(DEFAULT_GAME_SETTINGS.repeat);
-  const [modifiers, setModifiers] = useState(DEFAULT_GAME_SETTINGS.modifiers);
-  const [probability, setProbability] = useState(
-    DEFAULT_GAME_SETTINGS.modifierProbability,
-  );
-  const [preCommitProbability, setPreCommitProbability] = useState(
-    DEFAULT_GAME_SETTINGS.modifierProbability,
-  );
-  const probabilityLabel = useMemo(() => {
-    if (preCommitProbability === 0) {
-      return "Player choice";
-    }
-    return `${preCommitProbability}%`;
-  }, [preCommitProbability]);
-
-  useEffect(() => {
-    if (state.status !== "ready") return;
-    const { repeat, modifiers, modifierProbability } = state.settings;
-
-    setRepeat(repeat);
-    setModifiers(modifiers);
-    setPreCommitProbability(modifierProbability);
-    setProbability(modifierProbability);
-  }, [state]);
-
-  const settingsRef = useRef({ repeat, modifiers, probability });
-  useEffect(() => {
-    if (state.status !== "ready") return;
-
-    const prev = settingsRef.current;
-    const current = { repeat, modifiers, probability };
-    const hasChanged =
-      current.repeat !== prev.repeat ||
-      current.modifiers !== prev.modifiers ||
-      current.probability !== prev.probability;
-    if (!hasChanged) return;
-    settingsRef.current = current;
-
-    setSettings({
-      repeat,
-      modifiers,
-      modifierProbability: probability,
-    });
-  }, [repeat, modifiers, probability, state.status, setSettings]);
-
-  if (state.status !== "ready") {
+  if (settings.status !== "ready") {
     return (
       <SidebarGroup className="select-none">
         <SidebarGroupLabel>Game settings</SidebarGroupLabel>
@@ -68,6 +25,15 @@ export function NavGameSettings() {
       </SidebarGroup>
     );
   }
+
+  const repeat = settings.settings.repeat;
+  const modifiers = settings.settings.modifiers;
+  if (prevSettings !== settings) {
+    setPrevSettings(settings);
+    setPreCommitProbability(settings.settings.modifierProbability);
+  }
+  const probabilityLabel =
+    preCommitProbability === 0 ? "Player choice" : `${preCommitProbability}%`;
 
   return (
     <SidebarGroup className="select-none">
@@ -77,25 +43,23 @@ export function NavGameSettings() {
           {/* Repeat checkbox */}
           <AppSidebarItem
             className="hover:cursor-pointer"
-            onClick={() => setRepeat(!repeat)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSettings({ ...settings.settings, repeat: !repeat });
+            }}
           >
-            <Checkbox
-              id="repeat"
-              checked={repeat}
-              onCheckedChange={(v) => setRepeat(v as boolean)}
-            />
+            <Checkbox id="repeat" checked={repeat} />
             <span>Repeat categories/modifiers</span>
           </AppSidebarItem>
           {/* Modifiers checkbox */}
           <AppSidebarItem
             className="hover:cursor-pointer"
-            onClick={() => setModifiers(!modifiers)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSettings({ ...settings.settings, modifiers: !modifiers });
+            }}
           >
-            <Checkbox
-              id="modifiers"
-              checked={modifiers}
-              onCheckedChange={(v) => setModifiers(v as boolean)}
-            />
+            <Checkbox id="modifiers" checked={modifiers} />
             <span>Play with modifiers</span>
           </AppSidebarItem>
           {/* Modifier probability slider */}
@@ -110,7 +74,12 @@ export function NavGameSettings() {
                 step={25}
                 value={[preCommitProbability]}
                 onValueChange={(v) => setPreCommitProbability(v[0])}
-                onValueCommit={(v) => setProbability(v[0])}
+                onValueCommit={(v) =>
+                  setSettings({
+                    ...settings.settings,
+                    modifierProbability: v[0],
+                  })
+                }
                 disabled={!modifiers}
               />
             </div>
@@ -128,7 +97,7 @@ function AppSidebarItem({
 }: Readonly<{
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }>) {
   return (
     <div
