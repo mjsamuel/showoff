@@ -6,34 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import Delayed from "../delayed";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// declaring classes upfront so tailwind can genarte the necessary css
-const ROTATION_CLASSES: Record<number, string> = {
-  [-2]: "-rotate-2",
-  [-1]: "-rotate-1",
-  0: "rotate-0",
-  1: "rotate-1",
-  2: "rotate-2",
-};
-const BRIGHTNESS_CLASSES: Record<number, string> = {
-  0: "brightness-100",
-  1: "brightness-50",
-  2: "brightness-25",
-  3: "brightness-12",
-  4: "brightness-6",
-};
-const Z_INDEX_CLASSES: Record<number, string> = {
-  0: "-z-20",
-  1: "-z-22",
-  2: "-z-24",
-  3: "-z-26",
-  4: "-z-28",
-};
-
 export default function TwoDimensionalBoard({
   challenges,
 }: Readonly<{ challenges: Challenge[] }>) {
   const isMobile = useIsMobile();
-  const cutChallenges = challenges.slice(-5);
+  const cutChallenges = challenges.slice(isMobile ? -2 : -5);
   return (
     <div className="relative flex size-full items-center justify-center overflow-y-scroll">
       {cutChallenges.map((c, i) => (
@@ -41,28 +18,38 @@ export default function TwoDimensionalBoard({
           challenge={c}
           key={c.slug}
           isMobile={isMobile}
-          opacityClass={BRIGHTNESS_CLASSES[cutChallenges.length - 1 - i]}
-          zIndexClass={Z_INDEX_CLASSES[cutChallenges.length - 1 - i]}
+          zIndex={cutChallenges.length - 1 - i}
         />
       ))}
     </div>
   );
 }
 
+// declaring classes upfront so tailwind can genarte the necessary css
+const CHALLENGE_CLASS_BY_Z_INDEX: Record<
+  number,
+  { brightness: string; category: string; modifier: string }
+> = {
+  0: { brightness: "brightness-100", category: "z-8", modifier: "z-9" },
+  1: { brightness: "brightness-50", category: "z-6", modifier: "z-7" },
+  2: { brightness: "brightness-25", category: "z-4", modifier: "z-5" },
+  3: { brightness: "brightness-12", category: "z-2", modifier: "z-3" },
+  4: { brightness: "brightness-6", category: "z-0", modifier: "z-1" },
+};
 function ChallengeView({
   challenge,
   isMobile,
-  opacityClass,
-  zIndexClass,
+  zIndex,
 }: Readonly<{
   challenge: Challenge;
   isMobile: boolean;
-  opacityClass: string;
-  zIndexClass: string;
+  zIndex: number;
 }>) {
   const [categoryHeightOffset, setCategoryHeightOffset] = useState(0);
   const categoryCardRef = useRef<HTMLDivElement>(null);
   const categoryTextRef = useRef<HTMLDivElement>(null);
+
+  // get the height of the category card and calculate the offset for
   useEffect(() => {
     if (
       !challenge.modifier ||
@@ -73,24 +60,28 @@ function ChallengeView({
     }
     const totalHeight = categoryCardRef.current?.offsetHeight || 0;
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
-    const padding = 35;
-    const offset = totalHeight - textHeight - padding;
+    const categoryMargin = 40;
+    const offset = totalHeight - textHeight - categoryMargin;
     setCategoryHeightOffset((_) => offset);
   }, [challenge]);
+
+  const classes = CHALLENGE_CLASS_BY_Z_INDEX[zIndex];
 
   return (
     <div
       className={cn(
-        "absolute m-auto flex flex-col items-center md:flex-row",
-        opacityClass,
-        zIndexClass,
+        "absolute flex flex-col items-center md:flex-row",
+        classes.brightness,
       )}
     >
       <Card
         ref={categoryCardRef}
         textRef={categoryTextRef}
         prompt={challenge.category}
-        className="animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl"
+        className={cn(
+          "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl",
+          classes.category,
+        )}
         style={isMobile ? { marginBottom: -categoryHeightOffset } : {}}
       />
       {challenge.modifier && (
@@ -100,7 +91,10 @@ function ChallengeView({
         >
           <Card
             prompt={challenge.modifier}
-            className="animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-stone-800 text-white shadow-xl"
+            className={cn(
+              "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-stone-800 text-white shadow-xl",
+              classes.modifier,
+            )}
           />
         </Delayed>
       )}
@@ -108,6 +102,13 @@ function ChallengeView({
   );
 }
 
+const ROTATION_CLASSES: Record<number, string> = {
+  [-2]: "-rotate-2",
+  [-1]: "-rotate-1",
+  0: "rotate-0",
+  1: "rotate-1",
+  2: "rotate-2",
+};
 function Card({
   ref,
   textRef,
