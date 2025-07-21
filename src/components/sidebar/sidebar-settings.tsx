@@ -15,7 +15,9 @@ import { Skeleton } from "../ui/skeleton";
 export function NavGameSettings() {
   const [settings, setSettings] = useContext(SettingsContext);
   const [prevSettings, setPrevSettings] = useState(settings);
-  const [preCommitProbability, setPreCommitProbability] = useState(0);
+  const [preCommitProbability, setPreCommitProbability] = useState(
+    settings.status === "ready" ? settings?.settings?.modifierProbability : 0,
+  );
 
   if (settings.status !== "ready") {
     return (
