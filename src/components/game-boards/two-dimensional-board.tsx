@@ -2,7 +2,12 @@
 
 import { Challenge, Prompt } from "@/lib/game-engine";
 import { cn, getRandomNumberInRange } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  experimental_useEffectEvent as useEffectEvent,
+} from "react";
 import Delayed from "../delayed";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -12,7 +17,7 @@ export default function TwoDimensionalBoard({
   const isMobile = useIsMobile();
   const cutChallenges = challenges.slice(isMobile ? -2 : -5);
   return (
-    <div className="relative flex size-full items-center justify-center overflow-y-scroll">
+    <div className="relative flex size-full items-start justify-center overflow-y-scroll pt-[15vh] md:items-center md:pt-0">
       {cutChallenges.map((c, i) => (
         <ChallengeView
           challenge={c}
@@ -48,24 +53,28 @@ function ChallengeView({
   const [categoryHeightOffset, setCategoryHeightOffset] = useState(0);
   const categoryCardRef = useRef<HTMLDivElement>(null);
   const categoryTextRef = useRef<HTMLDivElement>(null);
+  const classes = CHALLENGE_CLASS_BY_Z_INDEX[zIndex];
+
+  const scrollCategoryIntoView = useEffectEvent((element: HTMLElement) => {
+    if (!isMobile) return;
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  });
 
   // get the height of the category card and calculate the offset for
   useEffect(() => {
-    if (
-      !challenge.modifier ||
-      !categoryCardRef.current ||
-      !categoryCardRef.current
-    ) {
-      return;
-    }
+    const categoryCard = categoryCardRef.current;
+    if (!challenge.modifier || !categoryCard) return;
     const totalHeight = categoryCardRef.current?.offsetHeight || 0;
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
     const categoryMargin = 40;
     const offset = totalHeight - textHeight - categoryMargin;
     setCategoryHeightOffset((_) => offset);
-  }, [challenge]);
-
-  const classes = CHALLENGE_CLASS_BY_Z_INDEX[zIndex];
+    scrollCategoryIntoView(categoryCard);
+  }, [challenge, scrollCategoryIntoView]);
 
   return (
     <div
@@ -81,6 +90,7 @@ function ChallengeView({
         className={cn(
           "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl",
           classes.category,
+          isMobile && !challenge.modifier && "mt-[10vh]",
         )}
         style={isMobile ? { marginBottom: -categoryHeightOffset } : {}}
       />
@@ -93,6 +103,7 @@ function ChallengeView({
             prompt={challenge.modifier}
             className={cn(
               "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-stone-800 text-white shadow-xl",
+              isMobile && "mb-28",
               classes.modifier,
             )}
           />
