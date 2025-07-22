@@ -240,7 +240,7 @@
   }
   ol,
   ul {
-    @apply list-decimal pl-4;
+    @apply list-decimal pl-6;
   }
   ol li {
     @apply list-decimal pl-2;
@@ -248,8 +248,20 @@
   ul li {
     @apply list-disc pl-2;
   }
-
   a {
     @apply text-primary underline;
+  }
+}
+
+.card-text {
+  ol,
+  ul {
+    @apply list-decimal pl-6;
+  }
+  ol li {
+    @apply list-decimal pl-2;
+  }
+  ul li {
+    @apply list-disc pl-2;
   }
 }

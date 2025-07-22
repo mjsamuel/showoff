@@ -140,7 +140,7 @@ function Card({
       ref={ref}
       style={style}
       className={cn(
-        "h-fit w-fit p-6",
+        "card-text h-fit w-fit p-6",
         ROTATION_CLASSES[rotation || 0],
         className,
       )}

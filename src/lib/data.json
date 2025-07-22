@@ -140,9 +140,9 @@
       "description": [
         "Moves that either:",
         "<ol>",
-        "<li>create the overt appearance of one or more cards/packet being ",
+        "<li>Create the overt appearance of one or more cards/packet being ",
         "suspended momentarily in space, or:</li>",
-        "<li>cause one or more cards/packets to move around a fixed point in space.</li>",
+        "<li>Cause one or more cards/packets to move around a fixed point in space.</li>",
         "</ol>"
       ]
     },
@@ -184,10 +184,10 @@
       "description": [
         "Moves that:",
         "<ol>",
-        "<li>have been created by Zach Mueller,</li>",
-        "<li>are original creations taught by cardists on the Fontaine Cards ",
+        "<li>Have been created by Zach Mueller,</li>",
+        "<li>Are original creations taught by cardists on the Fontaine Cards ",
         "YouTube channel, or</li>",
-        "<li>are taught on the Cardistry High download</li>",
+        "<li>Are taught on the Cardistry High download</li>",
         "</ol>"
       ]
     },
@@ -196,8 +196,8 @@
       "description": [
         "Moves that:",
         "<ol>",
-        "<li>have been created by Jaspas Deck, or</li>",
-        "<li>are original creations taught by cardists through New Deck Order",
+        "<li>Have been created by Jaspas Deck, or</li>",
+        "<li>Are original creations taught by cardists through New Deck Order",
         " Free/Premium Tutorials</li>",
         "</ol>"
       ]
@@ -217,12 +217,12 @@
     "xcm": {
       "name": "Superhandz / Handlordz moves (XCM)",
       "description": [
-        "Moves:",
+        "Moves that are:",
         "<ol>",
-        "<li>created by De'vo vom Schattenreich or Jerry Cestkowski,</li>",
-        "<li>created by card handlers heavily associated with",
+        "<li>Created by De'vo vom Schattenreich or Jerry Cestkowski,</li>",
+        "<li>Created by card handlers heavily associated with",
         " Superhandz/Handlordz, or</li>",
-        "<li>that are a trademark staple of the 'XCM' style of card handling</li>",
+        "<li>Are a trademark staple of the 'XCM' style of card handling</li>",
         "</ol>"
       ]
     },
@@ -591,7 +591,8 @@
       "name": "Moves featured on BCA",
       "description": [
         "Any move that has been featured (in video format) on the ",
-        "@bestcardistalive Instagram account."
+        "<a href=\"https://www.instagram.com/bestcardistalive/\" target=\"_blank\">@bestcardistalive</a> ",
+        "Instagram account."
       ]
     },
     "moty": {
