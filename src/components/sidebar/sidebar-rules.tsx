@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { RulesDialog } from "./rules-dialog";
+import { RulesDialog } from "../rules/rules-dialog";
 
 export function NavHowToPlay({ className }: Readonly<{ className?: string }>) {
   return (

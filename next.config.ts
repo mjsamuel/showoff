@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   experimental: {
     taint: true,
   },
+  turbopack: {
+    rules: {
+      "*.md": { loaders: ["raw-loader"], as: "raw" },
+    },
+  },
 };
 
 export default nextConfig;
