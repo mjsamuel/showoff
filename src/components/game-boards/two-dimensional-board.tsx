@@ -2,12 +2,7 @@
 
 import { Challenge, Prompt } from "@/lib/game-engine";
 import { cn, getRandomNumberInRange } from "@/lib/utils";
-import {
-  useEffect,
-  useRef,
-  useState,
-  experimental_useEffectEvent as useEffectEvent,
-} from "react";
+import { useRef, useState, useEffectEvent, useLayoutEffect } from "react";
 import Delayed from "../delayed";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -30,7 +25,7 @@ export default function TwoDimensionalBoard({
   );
 }
 
-// declaring classes upfront so tailwind can genarte the necessary css
+// declaring classes upfront so tailwind can generate the necessary css
 const CHALLENGE_CLASS_BY_Z_INDEX: Record<
   number,
   { brightness: string; category: string; modifier: string }
@@ -64,17 +59,18 @@ function ChallengeView({
     });
   });
 
-  // get the height of the category card and calculate the offset for
-  useEffect(() => {
+  // get the height of the category card and calculate the offset for the modifier card
+  useLayoutEffect(() => {
     const categoryCard = categoryCardRef.current;
     if (!challenge.modifier || !categoryCard) return;
     const totalHeight = categoryCardRef.current?.offsetHeight || 0;
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
     const categoryMargin = 40;
     const offset = totalHeight - textHeight - categoryMargin;
-    setCategoryHeightOffset((_) => offset);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCategoryHeightOffset(offset);
     scrollCategoryIntoView(categoryCard);
-  }, [challenge, scrollCategoryIntoView]);
+  }, [challenge]);
 
   return (
     <div

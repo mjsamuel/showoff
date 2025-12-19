@@ -1,17 +1,13 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import next from "eslint-config-next";
+import nextTypescript from "eslint-config-next/typescript";
+import { defineConfig, globalIgnores } from "eslint/config";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.config({
-    extends: ["next", "next/typescript"],
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...next,
+  ...nextTypescript,
+  {
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -22,7 +18,14 @@ const eslintConfig = [
         },
       ],
     },
-  }),
-];
+  },
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "src/components/ui/**",
+  ]),
+]);
 
 export default eslintConfig;
