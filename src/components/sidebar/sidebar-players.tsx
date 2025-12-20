@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Player = {
   name: string;
@@ -84,6 +85,7 @@ function PlayerMenuItem({
   onDelete?: () => void;
   onChange: (player: Player) => void;
 }>) {
+  const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -91,14 +93,6 @@ function PlayerMenuItem({
     if (event.key === "Enter" || event.key === "Escape") {
       nameInputRef.current?.blur();
     }
-  }
-
-  function incrementLives() {
-    onChange({ ...player, lives: Math.min(player.lives + 1, 50) });
-  }
-
-  function decrementLives() {
-    onChange({ ...player, lives: Math.max(player.lives - 1, 0) });
   }
 
   return (
@@ -124,29 +118,54 @@ function PlayerMenuItem({
           onKeyDown={onInputKeyDown}
           onChange={(e) => onChange({ ...player, name: e.target.value })}
         />
-        <Tooltip>
-          <TooltipTrigger>
-            <span
-              className="flex flex-row items-center gap-1"
-              onClick={incrementLives}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                decrementLives();
-              }}
-            >
-              <Heart className="size-4" />
-              <span>{player.lives}</span>
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              Left click: +1 life
-              <br />
-              Right click: -1 life
-            </p>
-          </TooltipContent>
-        </Tooltip>
+        {!isMobile && (
+          <LifeCounter
+            lives={player.lives}
+            onChange={(lives) => onChange({ ...player, lives })}
+          />
+        )}
       </div>
     </SidebarMenuItem>
+  );
+}
+
+function LifeCounter({
+  lives,
+  onChange,
+}: Readonly<{
+  lives: number;
+  onChange: (lives: number) => void;
+}>) {
+  function incrementLives() {
+    onChange(Math.min(lives + 1, 50));
+  }
+
+  function decrementLives() {
+    onChange(Math.max(lives - 1, 0));
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger>
+        <span
+          className="flex flex-row items-center gap-1"
+          onClick={incrementLives}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            decrementLives();
+          }}
+        >
+          <Heart className="size-4" />
+          <span>{lives}</span>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>
+          Left click: +1 life
+          <br />
+          Right click: -1 life
+        </p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
