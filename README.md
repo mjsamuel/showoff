@@ -73,5 +73,5 @@ pnpm build       # Typecheck app + worker, then vite build
 To deploy by hand:
 
 ```sh
-pnpm deploy --stage prod
+pnpm run deploy --stage prod
 ```
