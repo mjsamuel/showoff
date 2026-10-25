@@ -1,4 +1,4 @@
-import { Crown, Plus, User, UserMinus, Heart } from "lucide-react";
+import { Crown, Heart, Minus, Plus, User, UserMinus } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -98,7 +98,7 @@ function PlayerMenuItem({
         {onRename ? (
           <input
             type="text"
-            className="grow"
+            className="min-w-0 grow"
             defaultValue={player.name}
             ref={nameInputRef}
             onKeyDown={onInputKeyDown}
@@ -107,7 +107,7 @@ function PlayerMenuItem({
         ) : (
           <span
             className={cn(
-              "grow truncate",
+              "min-w-0 grow truncate",
               player.connected === false && "text-sidebar-foreground/50",
             )}
           >
@@ -117,7 +117,9 @@ function PlayerMenuItem({
             )}
           </span>
         )}
-        {!isMobile && (
+        {isMobile ? (
+          <TouchLifeCounter lives={player.lives} onChange={onLivesChange} />
+        ) : (
           <LifeCounter lives={player.lives} onChange={onLivesChange} />
         )}
       </div>
@@ -164,5 +166,39 @@ function LifeCounter({
         </p>
       </TooltipContent>
     </Tooltip>
+  );
+}
+
+// Phones have no right-click or hover, so lives get their own buttons
+function TouchLifeCounter({
+  lives,
+  onChange,
+}: Readonly<{
+  lives: number;
+  onChange: (delta: number) => void;
+}>) {
+  return (
+    <span className="flex shrink-0 flex-row items-center">
+      <button
+        type="button"
+        aria-label="Lose a life"
+        className="active:bg-sidebar-accent flex size-8 items-center justify-center rounded-md"
+        onClick={() => onChange(-1)}
+      >
+        <Minus className="size-4" />
+      </button>
+      <span className="flex min-w-9 flex-row items-center justify-center gap-1">
+        <Heart className="size-4" />
+        <span>{lives}</span>
+      </span>
+      <button
+        type="button"
+        aria-label="Gain a life"
+        className="active:bg-sidebar-accent flex size-8 items-center justify-center rounded-md"
+        onClick={() => onChange(1)}
+      >
+        <Plus className="size-4" />
+      </button>
+    </span>
   );
 }
