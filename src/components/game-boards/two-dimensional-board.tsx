@@ -1,6 +1,4 @@
-"use client";
-
-import { Challenge, Prompt } from "@/lib/game-engine";
+import type { Challenge, Prompt } from "@/lib/types";
 import { cn, getRandomNumberInRange } from "@/lib/utils";
 import { useRef, useState, useEffectEvent, useLayoutEffect } from "react";
 import Delayed from "../delayed";
@@ -8,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function TwoDimensionalBoard({
   challenges,
-}: Readonly<{ challenges: Challenge[] }>) {
+}: Readonly<{ challenges: ReadonlyArray<Challenge> }>) {
   const isMobile = useIsMobile();
   const cutChallenges = challenges.slice(isMobile ? -2 : -5);
   return (
@@ -67,7 +65,6 @@ function ChallengeView({
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
     const categoryMargin = 40;
     const offset = totalHeight - textHeight - categoryMargin;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCategoryHeightOffset(offset);
     scrollCategoryIntoView(categoryCard);
   }, [challenge]);

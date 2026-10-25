@@ -1,6 +1,4 @@
-"use client";
-
-import { Plus, User, UserMinus, Heart } from "lucide-react";
+import { Crown, Plus, User, UserMinus, Heart } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -16,60 +14,39 @@ import {
 } from "@/components/ui/tooltip";
 import { useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-type Player = {
-  name: string;
-  lives: number;
-};
+import { useGame, type GamePlayer } from "@/hooks/use-game";
+import { cn } from "@/lib/utils";
+import { MAX_LIVES } from "@/lib/types";
 
 export function NavPlayers({ className }: Readonly<{ className?: string }>) {
-  const [players, setPlayers] = useState<Player[]>([
-    { name: "Player 1", lives: 3 },
-  ]);
-
-  function addUser() {
-    setPlayers([
-      ...players,
-      {
-        name: `Player ${players.length + 1}`,
-        lives: 3,
-      },
-    ]);
-  }
-
-  function deleteUser(index: number) {
-    setPlayers(players.filter((_, i) => i !== index));
-  }
-
-  function onPlayerChange(changedPlayer: Player) {
-    const nextPlayers = players.map((p) => {
-      if (p.name === changedPlayer.name) return changedPlayer;
-      return p;
-    });
-    setPlayers(nextPlayers);
-  }
+  const { players, roster, setLives } = useGame();
 
   return (
     <SidebarGroup className={className}>
       <SidebarGroupLabel>Players</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {players.map((player, index) => (
+          {players.map((player) => (
             <PlayerMenuItem
-              key={index + player.name}
+              key={player.id}
               player={player}
-              onDelete={() => deleteUser(index)}
-              onChange={onPlayerChange}
+              onDelete={roster ? () => roster.remove(player.id) : undefined}
+              onRename={
+                roster ? (name) => roster.rename(player.id, name) : undefined
+              }
+              onLivesChange={(lives) => setLives(player.id, lives)}
             />
           ))}
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              className="text-sidebar-foreground/70 hover:cursor-pointer"
-              onClick={addUser}
-            >
-              <Plus /> Add player
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {roster && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                className="text-sidebar-foreground/70 hover:cursor-pointer"
+                onClick={roster.add}
+              >
+                <Plus /> Add player
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
@@ -79,11 +56,14 @@ export function NavPlayers({ className }: Readonly<{ className?: string }>) {
 function PlayerMenuItem({
   player,
   onDelete,
-  onChange,
+  onRename,
+  onLivesChange,
 }: Readonly<{
-  player: Player;
+  player: GamePlayer;
+  // Only for players on this device; a room's players name themselves
   onDelete?: () => void;
-  onChange: (player: Player) => void;
+  onRename?: (name: string) => void;
+  onLivesChange: (lives: number) => void;
 }>) {
   const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
@@ -98,31 +78,48 @@ function PlayerMenuItem({
   return (
     <SidebarMenuItem>
       <div className="hover:bg-sidebar-accent flex w-full flex-row items-center gap-2 rounded-md p-2">
-        <span
-          onClick={onDelete}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="size-5 hover:cursor-pointer"
-        >
-          {!isHovered ? (
-            <User className="size-5" />
-          ) : (
-            <UserMinus className="size-5" />
-          )}
-        </span>
-        <input
-          type="text"
-          className="grow"
-          defaultValue={player.name}
-          ref={nameInputRef}
-          onKeyDown={onInputKeyDown}
-          onChange={(e) => onChange({ ...player, name: e.target.value })}
-        />
-        {!isMobile && (
-          <LifeCounter
-            lives={player.lives}
-            onChange={(lives) => onChange({ ...player, lives })}
+        {onDelete ? (
+          <span
+            onClick={onDelete}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="size-5 hover:cursor-pointer"
+          >
+            {!isHovered ? (
+              <User className="size-5" />
+            ) : (
+              <UserMinus className="size-5" />
+            )}
+          </span>
+        ) : player.host ? (
+          <Crown className="size-5" aria-label="Host" />
+        ) : (
+          <User className="size-5" />
+        )}
+        {onRename ? (
+          <input
+            type="text"
+            className="grow"
+            defaultValue={player.name}
+            ref={nameInputRef}
+            onKeyDown={onInputKeyDown}
+            onChange={(e) => onRename(e.target.value)}
           />
+        ) : (
+          <span
+            className={cn(
+              "grow truncate",
+              player.connected === false && "text-sidebar-foreground/50",
+            )}
+          >
+            {player.name}
+            {player.you && (
+              <span className="text-sidebar-foreground/70"> (you)</span>
+            )}
+          </span>
+        )}
+        {!isMobile && (
+          <LifeCounter lives={player.lives} onChange={onLivesChange} />
         )}
       </div>
     </SidebarMenuItem>
@@ -137,7 +134,7 @@ function LifeCounter({
   onChange: (lives: number) => void;
 }>) {
   function incrementLives() {
-    onChange(Math.min(lives + 1, 50));
+    onChange(Math.min(lives + 1, MAX_LIVES));
   }
 
   function decrementLives() {

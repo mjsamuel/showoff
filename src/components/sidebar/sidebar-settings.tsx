@@ -1,5 +1,3 @@
-"use client";
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -8,32 +6,29 @@ import {
 } from "@/components/ui/sidebar";
 import { Checkbox } from "../ui/checkbox";
 import { Slider } from "../ui/slider";
-import { useContext, useState } from "react";
-import { SettingsContext } from "../settings-provider";
-import { Skeleton } from "../ui/skeleton";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useGame } from "@/hooks/use-game";
 
 export function NavGameSettings() {
-  const [settings, setSettings] = useContext(SettingsContext);
-  const [prevSettings, setPrevSettings] = useState(settings);
+  const { settings, updateSettings, canChangeSettings, hasHistory } = useGame();
+  const [prevProbability, setPrevProbability] = useState(
+    settings.modifierProbability,
+  );
   const [preCommitProbability, setPreCommitProbability] = useState(
-    settings.status === "ready" ? settings?.settings?.modifierProbability : 0,
+    settings.modifierProbability,
   );
 
-  if (settings.status !== "ready") {
-    return (
-      <SidebarGroup className="select-none">
-        <SidebarGroupLabel>Game settings</SidebarGroupLabel>
-        <Skeleton className="h-34" />
-      </SidebarGroup>
-    );
+  const { repeat, modifiers } = settings;
+  // Follow changes made elsewhere, e.g. by a room's host
+  if (prevProbability !== settings.modifierProbability) {
+    setPrevProbability(settings.modifierProbability);
+    setPreCommitProbability(settings.modifierProbability);
   }
-
-  const repeat = settings.settings.repeat;
-  const modifiers = settings.settings.modifiers;
-  if (prevSettings !== settings) {
-    setPrevSettings(settings);
-    setPreCommitProbability(settings.settings.modifierProbability);
-  }
+  const toggleRepeat = () => {
+    if (!repeat && hasHistory) toast("Category/modifier play history cleared");
+    updateSettings({ repeat: !repeat });
+  };
   const probabilityLabel =
     preCommitProbability === 0 ? "Player choice" : `${preCommitProbability}%`;
 
@@ -41,13 +36,19 @@ export function NavGameSettings() {
     <SidebarGroup className="select-none">
       <SidebarGroupLabel>Game settings</SidebarGroupLabel>
       <SidebarGroupContent>
+        {!canChangeSettings && (
+          <p className="text-sidebar-foreground/70 mb-1 px-2 text-xs">
+            Only the host can change settings
+          </p>
+        )}
         <SidebarMenu>
           {/* Repeat checkbox */}
           <AppSidebarItem
             className="hover:cursor-pointer"
+            disabled={!canChangeSettings}
             onClick={(e) => {
               e.stopPropagation();
-              setSettings({ ...settings.settings, repeat: !repeat });
+              toggleRepeat();
             }}
           >
             <Checkbox id="repeat" checked={repeat} />
@@ -56,9 +57,10 @@ export function NavGameSettings() {
           {/* Modifiers checkbox */}
           <AppSidebarItem
             className="hover:cursor-pointer"
+            disabled={!canChangeSettings}
             onClick={(e) => {
               e.stopPropagation();
-              setSettings({ ...settings.settings, modifiers: !modifiers });
+              updateSettings({ modifiers: !modifiers });
             }}
           >
             <Checkbox id="modifiers" checked={modifiers} />
@@ -77,12 +79,9 @@ export function NavGameSettings() {
                 value={[preCommitProbability]}
                 onValueChange={(v) => setPreCommitProbability(v[0])}
                 onValueCommit={(v) =>
-                  setSettings({
-                    ...settings.settings,
-                    modifierProbability: v[0],
-                  })
+                  updateSettings({ modifierProbability: v[0] })
                 }
-                disabled={!modifiers}
+                disabled={!modifiers || !canChangeSettings}
               />
             </div>
           </AppSidebarItem>
@@ -95,15 +94,18 @@ export function NavGameSettings() {
 function AppSidebarItem({
   children,
   className,
+  disabled,
   onClick,
 }: Readonly<{
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }>) {
   return (
     <div
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled}
       className={`${className} peer/menu-button ring-sidebar-ring active:bg-sidebar-accent active:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0`}
     >
       {children}

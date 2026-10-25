@@ -1,0 +1,6 @@
+allowBuilds:
+  msw: false
+  puppeteer: true
+  sharp: false
+  unrs-resolver: false
+  workerd: true
