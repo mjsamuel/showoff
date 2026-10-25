@@ -5,13 +5,12 @@ import { canAddModifier, hasHistory } from "@/lib/game-logic";
 import {
   addModifierAtom,
   addPlayerAtom,
-  clampLives,
   gameAtom,
   nextTurnAtom,
   playersAtom,
   removePlayerAtom,
   renamePlayerAtom,
-  setLivesAtom,
+  changeLivesAtom,
   settingsAtom,
   updateSettingsAtom,
 } from "@/lib/store";
@@ -50,7 +49,7 @@ function LocalGame({ children }: Readonly<{ children: React.ReactNode }>) {
   const addPlayer = useAtomSet(addPlayerAtom);
   const removePlayer = useAtomSet(removePlayerAtom);
   const renamePlayer = useAtomSet(renamePlayerAtom);
-  const setLives = useAtomSet(setLivesAtom);
+  const changeLives = useAtomSet(changeLivesAtom);
 
   const game = useMemo<Game>(
     () => ({
@@ -63,13 +62,14 @@ function LocalGame({ children }: Readonly<{ children: React.ReactNode }>) {
       nextTurn: () => nextTurn(),
       addModifier: () => addModifier(),
       updateSettings,
-      setLives: (id, lives) => setLives({ id, lives }),
+      changeLives: (id, delta) => changeLives({ id, delta }),
       roster: {
         add: () => addPlayer(),
         remove: removePlayer,
         rename: (id, name) => renamePlayer({ id, name }),
       },
       room: null,
+      connected: true,
       leaveRoom: () => {},
     }),
     [
@@ -82,7 +82,7 @@ function LocalGame({ children }: Readonly<{ children: React.ReactNode }>) {
       addPlayer,
       removePlayer,
       renamePlayer,
-      setLives,
+      changeLives,
     ],
   );
 
@@ -138,6 +138,9 @@ function RoomSessionGame({
         <p className="text-muted-foreground animate-pulse text-sm">
           Connecting...
         </p>
+        <Button onClick={() => exitRoom(null)} variant="outline">
+          Cancel
+        </Button>
       </RoomMessage>
     );
   }
@@ -159,6 +162,7 @@ function RoomGameContext({
   children: React.ReactNode;
 }>) {
   const { send } = session;
+  const connected = session.status === "open";
   const exitRoom = useAtomSet(roomCodeAtom);
   const game = useMemo<Game>(() => {
     const current = view.challenges.at(-1);
@@ -178,16 +182,19 @@ function RoomGameContext({
         if (current) send({ _tag: "AddModifier", slug: current.slug });
       },
       updateSettings: (patch) => send({ _tag: "UpdateSettings", patch }),
-      setLives: (playerId, lives) =>
-        send({ _tag: "SetLives", playerId, lives: clampLives(lives) }),
+      changeLives: (playerId, delta) =>
+        send({ _tag: "ChangeLives", playerId, delta }),
       roster: null,
       room: view,
+      connected,
       leaveRoom: () => {
-        send({ _tag: "Leave" });
+        // Closing the socket drops a Leave still waiting for a reconnect, so only
+        // send it while connected; otherwise the seat stays until the room expires
+        if (connected) send({ _tag: "Leave" });
         exitRoom(null);
       },
     };
-  }, [view, send, exitRoom]);
+  }, [view, send, exitRoom, connected]);
 
   return (
     <GameContext.Provider value={game}>

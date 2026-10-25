@@ -113,13 +113,13 @@ export const nextTurn = Effect.fn("nextTurn")(function* (
   );
 });
 
-// A player asking for a modifier on the current challenge, when it doesn't have one yet
+// A player asking for a modifier on the current challenge, when the settings allow it
 export const addModifier = Effect.fn("addModifier")(function* (
   state: GameState,
   settings: GameSettings,
 ) {
   const current = state.challenges.at(-1);
-  if (!current || current.modifier) return state;
+  if (!current || !canAddModifier(state.challenges, settings)) return state;
   const modifier = yield* drawModifier(state.deck, settings, current.category);
   if (Option.isNone(modifier)) return state;
   return {

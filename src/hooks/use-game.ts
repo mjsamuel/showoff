@@ -26,7 +26,7 @@ export interface Game {
   readonly nextTurn: () => void;
   readonly addModifier: () => void;
   readonly updateSettings: (patch: Partial<GameSettings>) => void;
-  readonly setLives: (playerId: string, lives: number) => void;
+  readonly changeLives: (playerId: string, delta: number) => void;
   // Only on this device: a room's players are whoever has joined
   readonly roster: {
     readonly add: () => void;
@@ -34,7 +34,9 @@ export interface Game {
     readonly rename: (playerId: string, name: string) => void;
   } | null;
   readonly room: RoomView | null;
-  // Gives up this device's seat and goes back to playing locally
+  // Rooms only: false while reconnecting
+  readonly connected: boolean;
+  // Goes back to playing locally, giving up this device's seat if the room can be told
   readonly leaveRoom: () => void;
 }
 

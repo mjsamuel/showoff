@@ -6,8 +6,8 @@ import { LS_SETTINGS } from "./constants";
 import {
   DEFAULT_SETTINGS,
   GameSettings,
-  MAX_LIVES,
   STARTING_LIVES,
+  clampLives,
   type GameState,
   type Player,
 } from "./types";
@@ -107,14 +107,15 @@ export const renamePlayerAtom = command<{ id: string; name: string }>(
   },
 );
 
-export const clampLives = (lives: number) =>
-  Math.max(0, Math.min(MAX_LIVES, Math.round(lives)));
-
-export const setLivesAtom = command<{ id: string; lives: number }>(
-  (ctx, { id, lives }) => {
+export const changeLivesAtom = command<{ id: string; delta: number }>(
+  (ctx, { id, delta }) => {
     ctx.set(
       playersAtom,
-      updatePlayer(ctx.get(playersAtom), id, { lives: clampLives(lives) }),
+      ctx
+        .get(playersAtom)
+        .map((p) =>
+          p.id === id ? { ...p, lives: clampLives(p.lives + delta) } : p,
+        ),
     );
   },
 );

@@ -56,9 +56,9 @@ describe("join", () => {
   it("keeps the seat and lives when the same id rejoins", () => {
     let state = roomWith("a", "b");
     state = send(state, "a", {
-      _tag: "SetLives",
+      _tag: "ChangeLives",
       playerId: "seat-b",
-      lives: 1,
+      delta: -2,
     });
     state = joinOrThrow(state, "b", "Bobby");
     expect(state.players[1]).toEqual({
@@ -173,31 +173,61 @@ describe("apply", () => {
 
   it("lets anyone keep score", () => {
     const state = send(roomWith("a", "b"), "b", {
-      _tag: "SetLives",
+      _tag: "ChangeLives",
       playerId: "seat-a",
-      lives: 2,
+      delta: -1,
     });
     expect(state.players[0].lives).toBe(2);
+  });
+
+  // Two quick taps from the same total both count
+  it("applies each change to the latest lives", () => {
+    const tap = { _tag: "ChangeLives", playerId: "seat-a", delta: 1 } as const;
+    const state = send(send(roomWith("a", "b"), "a", tap), "b", tap);
+    expect(state.players[0].lives).toBe(5);
+  });
+
+  it("keeps lives between 0 and the maximum", () => {
+    const state = send(roomWith("a"), "a", {
+      _tag: "ChangeLives",
+      playerId: "seat-a",
+      delta: -10,
+    });
+    expect(state.players[0].lives).toBe(0);
   });
 
   it("rejects score changes for players who have left", () => {
     expect(
       rejection(roomWith("a"), "a", {
-        _tag: "SetLives",
+        _tag: "ChangeLives",
         playerId: "seat-gone",
-        lives: 2,
+        delta: 1,
       }),
     ).toMatch(/left/);
   });
 
-  it("rejects lives out of range when decoding", () => {
+  it("rejects fractional or oversized changes when decoding", () => {
     const decode = Schema.decodeUnknownOption(ClientMessage);
     expect(
-      decode({ _tag: "SetLives", playerId: "seat-a", lives: -1 })._tag,
+      decode({ _tag: "ChangeLives", playerId: "seat-a", delta: 1.5 })._tag,
     ).toBe("None");
     expect(
-      decode({ _tag: "SetLives", playerId: "seat-a", lives: 1.5 })._tag,
+      decode({ _tag: "ChangeLives", playerId: "seat-a", delta: 1000 })._tag,
     ).toBe("None");
+  });
+
+  it("ignores a modifier request once the host turns them off", () => {
+    let state = send(roomWith("a", "b"), "a", {
+      _tag: "UpdateSettings",
+      patch: { modifierProbability: 0 },
+    });
+    state = nextTurn(state);
+    const slug = current(state)!;
+    state = send(state, "a", {
+      _tag: "UpdateSettings",
+      patch: { modifiers: false },
+    });
+    expect(send(state, "b", { _tag: "AddModifier", slug })).toBe(state);
   });
 });
 

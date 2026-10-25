@@ -51,9 +51,14 @@ export interface GameState {
 
 export const MAX_LIVES = 50;
 export const STARTING_LIVES = 3;
-export const Lives = Schema.Int.check(
-  Schema.isBetween({ minimum: 0, maximum: MAX_LIVES }),
+// A change to apply to a player's lives, rather than a new total, so quick
+// taps and edits from several devices all count
+export const LivesDelta = Schema.Int.check(
+  Schema.isBetween({ minimum: -MAX_LIVES, maximum: MAX_LIVES }),
 );
+
+export const clampLives = (lives: number) =>
+  Math.max(0, Math.min(MAX_LIVES, Math.round(lives)));
 
 export interface Player {
   readonly id: string;

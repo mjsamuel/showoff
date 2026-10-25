@@ -9,7 +9,7 @@ import {
   playersAtom,
   removePlayerAtom,
   renamePlayerAtom,
-  setLivesAtom,
+  changeLivesAtom,
   settingsAtom,
   updateSettingsAtom,
 } from "@/lib/store";
@@ -113,9 +113,9 @@ describe("players", () => {
 
   it("keeps lives between 0 and the maximum", () => {
     const [{ id }] = registry.get(playersAtom);
-    registry.set(setLivesAtom, { id, lives: -1 });
+    registry.set(changeLivesAtom, { id, delta: -4 });
     expect(registry.get(playersAtom)[0].lives).toBe(0);
-    registry.set(setLivesAtom, { id, lives: MAX_LIVES + 1 });
+    registry.set(changeLivesAtom, { id, delta: MAX_LIVES + 1 });
     expect(registry.get(playersAtom)[0].lives).toBe(MAX_LIVES);
   });
 });

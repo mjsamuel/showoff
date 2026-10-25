@@ -188,6 +188,21 @@ describe("addModifier", () => {
     expect(canAddModifier(after.challenges, onRequest)).toBe(false);
   });
 
+  it("does nothing unless modifiers are on request", () => {
+    const state = turns(1, onRequest);
+    expect(run(addModifier(state, settings({ modifierProbability: 50 })))).toBe(
+      state,
+    );
+    expect(
+      run(
+        addModifier(
+          state,
+          settings({ modifiers: false, modifierProbability: 0 }),
+        ),
+      ),
+    ).toBe(state);
+  });
+
   it("does nothing once the challenge has a modifier", () => {
     const once = run(addModifier(turns(1, onRequest), onRequest));
     expect(run(addModifier(once, onRequest))).toBe(once);

@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { MAX_LIVES } from "@/lib/types";
 
 export function NavPlayers({ className }: Readonly<{ className?: string }>) {
-  const { players, roster, setLives } = useGame();
+  const { players, roster, changeLives } = useGame();
 
   return (
     <SidebarGroup className={className}>
@@ -34,7 +34,7 @@ export function NavPlayers({ className }: Readonly<{ className?: string }>) {
               onRename={
                 roster ? (name) => roster.rename(player.id, name) : undefined
               }
-              onLivesChange={(lives) => setLives(player.id, lives)}
+              onLivesChange={(delta) => changeLives(player.id, delta)}
             />
           ))}
           {roster && (
@@ -63,7 +63,7 @@ function PlayerMenuItem({
   // Only for players on this device; a room's players name themselves
   onDelete?: () => void;
   onRename?: (name: string) => void;
-  onLivesChange: (lives: number) => void;
+  onLivesChange: (delta: number) => void;
 }>) {
   const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
@@ -131,14 +131,14 @@ function LifeCounter({
   onChange,
 }: Readonly<{
   lives: number;
-  onChange: (lives: number) => void;
+  onChange: (delta: number) => void;
 }>) {
   function incrementLives() {
-    onChange(Math.min(lives + 1, MAX_LIVES));
+    if (lives < MAX_LIVES) onChange(1);
   }
 
   function decrementLives() {
-    onChange(Math.max(lives - 1, 0));
+    if (lives > 0) onChange(-1);
   }
 
   return (

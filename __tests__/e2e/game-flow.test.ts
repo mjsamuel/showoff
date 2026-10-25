@@ -5,7 +5,7 @@ let browser: Browser;
 let page: Page;
 
 const challengeTitles = () =>
-  page.$$eval(".card-text p:first-child", (els) =>
+  page.$$eval("[data-card=category] p:first-child", (els) =>
     els.map((el) => el.textContent),
   );
 
@@ -26,17 +26,17 @@ describe("Game flow", () => {
 
   it("shows the board with a first challenge", async () => {
     await page.waitForSelector("h1::-p-text(Showoff)");
-    await page.waitForSelector(".card-text");
+    await page.waitForSelector("[data-card=category]");
     expect(await challengeTitles()).toHaveLength(1);
   });
 
   it("draws a new challenge each turn", async () => {
     await page.click("button::-p-text(Next turn)");
     await page.waitForFunction(
-      () => document.querySelectorAll(".card-text").length >= 2,
+      () => document.querySelectorAll("[data-card=category]").length === 2,
     );
     const titles = await challengeTitles();
-    expect(titles.length).toBeGreaterThanOrEqual(2);
+    expect(titles).toHaveLength(2);
   });
 
   it("adds a player", async () => {

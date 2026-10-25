@@ -25,7 +25,7 @@ import { useGame } from "@/hooks/use-game";
 import type { RoomView } from "@/lib/room-protocol";
 
 export function AppSidebar() {
-  const { room, leaveRoom } = useGame();
+  const { room, connected, leaveRoom } = useGame();
 
   return (
     <Sidebar>
@@ -36,7 +36,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         {room ? (
-          <RoomControls room={room} onLeave={leaveRoom} />
+          <RoomControls room={room} connected={connected} onLeave={leaveRoom} />
         ) : (
           <div className="mx-4 my-3 flex gap-3">
             <RoomDialog mode="join">
@@ -59,8 +59,9 @@ export function AppSidebar() {
 
 function RoomControls({
   room,
+  connected,
   onLeave,
-}: Readonly<{ room: RoomView; onLeave: () => void }>) {
+}: Readonly<{ room: RoomView; connected: boolean; onLeave: () => void }>) {
   const [confirmLeave, setConfirmLeave] = useState(false);
 
   const copyInvite = async () => {
@@ -92,8 +93,9 @@ function RoomControls({
           <AlertDialogHeader>
             <AlertDialogTitle>Leave room?</AlertDialogTitle>
             <AlertDialogDescription>
-              You&rsquo;ll lose your seat and lives. You can rejoin with the
-              room code while it&rsquo;s still open.
+              {connected
+                ? "You\u2019ll lose your seat and lives. You can rejoin with the room code while it\u2019s still open."
+                : "You\u2019re offline, so your seat and lives stay in the room until it closes. Rejoin with the room code to pick up where you left off."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

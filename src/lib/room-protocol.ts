@@ -1,5 +1,5 @@
 import { Schema } from "effect";
-import { Challenge, GameSettings, Lives } from "./types";
+import { Challenge, GameSettings, LivesDelta } from "./types";
 
 // Shared by the browser and the Room Durable Object (worker/room.ts)
 
@@ -41,7 +41,7 @@ export const ClientMessage = Schema.TaggedUnion({
   // Only applies while `slug` is still the current challenge
   AddModifier: { slug: Schema.String },
   // A public seat id
-  SetLives: { playerId: Schema.String, lives: Lives },
+  ChangeLives: { playerId: Schema.String, delta: LivesDelta },
   Leave: {},
 });
 export type ClientMessage = typeof ClientMessage.Type;

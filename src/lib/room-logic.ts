@@ -1,6 +1,7 @@
 import { Data, Effect } from "effect";
 import {
   addModifier,
+  canAddModifier,
   emptyGame,
   hasHistory,
   nextTurn,
@@ -16,6 +17,7 @@ import {
 import {
   DEFAULT_SETTINGS,
   STARTING_LIVES,
+  clampLives,
   type GameSettings,
   type GameState,
 } from "./types";
@@ -162,17 +164,21 @@ export const apply = Effect.fn("room.apply")(function* (
     }
 
     case "AddModifier": {
+      // The host may have changed the settings while this was in flight
       if (message.slug !== current) return state;
+      if (!canAddModifier(state.game.challenges, state.settings)) return state;
       return { ...state, game: yield* addModifier(state.game, state.settings) };
     }
 
-    case "SetLives": {
+    case "ChangeLives": {
       if (!state.players.some((p) => p.seatId === message.playerId))
         return yield* reject("That player has left");
       return {
         ...state,
         players: state.players.map((p) =>
-          p.seatId === message.playerId ? { ...p, lives: message.lives } : p,
+          p.seatId === message.playerId
+            ? { ...p, lives: clampLives(p.lives + message.delta) }
+            : p,
         ),
       };
     }

@@ -80,6 +80,7 @@ function ChallengeView({
         ref={categoryCardRef}
         textRef={categoryTextRef}
         prompt={challenge.category}
+        kind="category"
         className={cn(
           "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl",
           classes.category,
@@ -94,6 +95,7 @@ function ChallengeView({
         >
           <Card
             prompt={challenge.modifier}
+            kind="modifier"
             className={cn(
               "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-stone-800 text-white shadow-xl",
               isMobile && "mb-28",
@@ -117,9 +119,11 @@ function Card({
   ref,
   textRef,
   prompt,
+  kind,
   className,
   style,
 }: Readonly<{
+  kind: "category" | "modifier";
   ref?: React.Ref<HTMLDivElement>;
   textRef?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
@@ -132,6 +136,7 @@ function Card({
     <div
       ref={ref}
       style={style}
+      data-card={kind}
       className={cn(
         "card-text h-fit w-fit p-6",
         ROTATION_CLASSES[rotation || 0],
