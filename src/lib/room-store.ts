@@ -93,8 +93,20 @@ export const roomSessionAtom = Atom.family((code: string) =>
         name: get.once(playerNameAtom),
       },
     });
-    const send = (message: ClientMessage) =>
-      socket.send(encodeClientMessage(message));
+    // PartySocket would queue messages while reconnecting and replay them in a burst,
+    // tripping the room's rate limit, so actions taken offline are dropped instead
+    const send = (message: ClientMessage) => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(encodeClientMessage(message));
+      } else {
+        update({
+          notice: {
+            reason: "Reconnecting, try again in a moment",
+            at: Date.now(),
+          },
+        });
+      }
+    };
     let session: RoomSession = {
       status: "connecting",
       view: null,

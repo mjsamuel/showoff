@@ -58,16 +58,19 @@ function ChallengeView({
   });
 
   // get the height of the category card and calculate the offset for the modifier card
+  // Keyed on the modifier rather than the challenge object, which rooms replace on
+  // every update; re-running would scroll a phone back while someone reads the card
+  const modifierKey = challenge.modifier?.key;
   useLayoutEffect(() => {
     const categoryCard = categoryCardRef.current;
-    if (!challenge.modifier || !categoryCard) return;
+    if (!modifierKey || !categoryCard) return;
     const totalHeight = categoryCardRef.current?.offsetHeight || 0;
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
     const categoryMargin = 40;
     const offset = totalHeight - textHeight - categoryMargin;
     setCategoryHeightOffset(offset);
     scrollCategoryIntoView(categoryCard);
-  }, [challenge]);
+  }, [modifierKey]);
 
   return (
     <div
