@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import { Box, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -89,7 +87,8 @@ function Card({
         onPointerOut={() => hover(false)}
         // eslint-disable-next-line
         onPointerUp={(e: any) => (
-          e.target.releasePointerCapture(e.pointerId), drag(false)
+          e.target.releasePointerCapture(e.pointerId),
+          drag(false)
         )}
         // eslint-disable-next-line
         onPointerDown={(e: any) => (

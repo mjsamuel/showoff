@@ -1,6 +1,4 @@
-"use client";
-
-import { Challenge, Prompt } from "@/lib/game-engine";
+import type { Challenge, Prompt } from "@/lib/types";
 import { cn, getRandomNumberInRange } from "@/lib/utils";
 import { useRef, useState, useEffectEvent, useLayoutEffect } from "react";
 import Delayed from "../delayed";
@@ -8,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function TwoDimensionalBoard({
   challenges,
-}: Readonly<{ challenges: Challenge[] }>) {
+}: Readonly<{ challenges: ReadonlyArray<Challenge> }>) {
   const isMobile = useIsMobile();
   const cutChallenges = challenges.slice(isMobile ? -2 : -5);
   return (
@@ -60,17 +58,19 @@ function ChallengeView({
   });
 
   // get the height of the category card and calculate the offset for the modifier card
+  // Keyed on the modifier rather than the challenge object, which rooms replace on
+  // every update; re-running would scroll a phone back while someone reads the card
+  const modifierKey = challenge.modifier?.key;
   useLayoutEffect(() => {
     const categoryCard = categoryCardRef.current;
-    if (!challenge.modifier || !categoryCard) return;
+    if (!modifierKey || !categoryCard) return;
     const totalHeight = categoryCardRef.current?.offsetHeight || 0;
     const textHeight = categoryTextRef.current?.offsetHeight || 0;
     const categoryMargin = 40;
     const offset = totalHeight - textHeight - categoryMargin;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCategoryHeightOffset(offset);
     scrollCategoryIntoView(categoryCard);
-  }, [challenge]);
+  }, [modifierKey]);
 
   return (
     <div
@@ -83,6 +83,7 @@ function ChallengeView({
         ref={categoryCardRef}
         textRef={categoryTextRef}
         prompt={challenge.category}
+        kind="category"
         className={cn(
           "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-gray-100 text-black shadow-xl",
           classes.category,
@@ -97,6 +98,7 @@ function ChallengeView({
         >
           <Card
             prompt={challenge.modifier}
+            kind="modifier"
             className={cn(
               "animate-card-fade-in min-h-96 w-80 min-w-80 rounded-xl bg-stone-800 text-white shadow-xl",
               isMobile && "mb-28",
@@ -120,9 +122,11 @@ function Card({
   ref,
   textRef,
   prompt,
+  kind,
   className,
   style,
 }: Readonly<{
+  kind: "category" | "modifier";
   ref?: React.Ref<HTMLDivElement>;
   textRef?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
@@ -135,6 +139,7 @@ function Card({
     <div
       ref={ref}
       style={style}
+      data-card={kind}
       className={cn(
         "card-text h-fit w-fit p-6",
         ROTATION_CLASSES[rotation || 0],

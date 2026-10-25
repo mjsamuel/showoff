@@ -1,4 +1,4 @@
-import rulesMarkdown from "./rules.md";
+import rulesMarkdown from "./rules.md?raw";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
