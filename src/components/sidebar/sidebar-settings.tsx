@@ -78,9 +78,12 @@ export function NavGameSettings() {
                 step={25}
                 value={[preCommitProbability]}
                 onValueChange={(v) => setPreCommitProbability(v[0])}
-                onValueCommit={(v) =>
-                  updateSettings({ modifierProbability: v[0] })
-                }
+                onValueCommit={(v) => {
+                  // Show the saved value until the change comes back, so a room
+                  // update that's dropped or refused doesn't look applied
+                  setPreCommitProbability(settings.modifierProbability);
+                  updateSettings({ modifierProbability: v[0] });
+                }}
                 disabled={!modifiers || !canChangeSettings}
               />
             </div>
