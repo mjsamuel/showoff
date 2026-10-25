@@ -171,7 +171,7 @@ export class Room extends Server<WorkerEnv> {
   async onClose(connection: Connection<Seat>) {
     const playerId = connection.state?.playerId;
     if (!this.#state || !playerId) return;
-    const connected = this.#connectedIds(undefined, connection.id);
+    const connected = this.#connectedIds(undefined, connection);
     await this.#commit(ensureHost(this.#state, connected), connected);
     if (connected.size === 0)
       await this.ctx.storage.setAlarm(Date.now() + IDLE_TTL_MS);
@@ -231,12 +231,14 @@ export class Room extends Server<WorkerEnv> {
     );
   }
 
-  // Players with at least one open socket, optionally ignoring one player or one closing socket
-  #connectedIds(exceptPlayer?: string, exceptConnection?: string) {
+  // Players with at least one open socket, optionally ignoring one player or one closing socket.
+  // The socket is compared by identity: PartySocket reconnects with the same connection id,
+  // so matching on id would also skip a reconnected player's live replacement.
+  #connectedIds(exceptPlayer?: string, exceptConnection?: Connection) {
     const ids = new Set<string>();
     for (const c of this.getConnections<Seat>()) {
       const playerId = c.state?.playerId;
-      if (playerId && playerId !== exceptPlayer && c.id !== exceptConnection)
+      if (playerId && playerId !== exceptPlayer && c !== exceptConnection)
         ids.add(playerId);
     }
     return ids;
