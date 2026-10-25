@@ -54,8 +54,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           pnpm exec alchemy deploy --stage "$STAGE" --yes 2>&1 | tee deploy.log
-          # A missing match must not fail the deploy
+          # prod's URL is its custom domain; a missing match must not fail the deploy
           url=$(grep -oE "https://[^' ]+\.workers\.dev" deploy.log | tail -1 || true)
+          url=${url:-$(grep -oE "https://(www\.)?showoff\.gg" deploy.log | tail -1 || true)}
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Deployed **$STAGE** to $url" >> "$GITHUB_STEP_SUMMARY"
 

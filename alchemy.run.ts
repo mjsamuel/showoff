@@ -7,7 +7,8 @@ import type { Room } from "./worker/room";
 // everything else and hosts the PartyServer rooms as Durable Objects
 export const Website = Cloudflare.Website.Vite(
   "Website",
-  Effect.sync(() => {
+  Effect.gen(function* () {
+    const stage = yield* Alchemy.Stage;
     return {
       main: "worker/index.ts",
       assets: {
@@ -29,6 +30,11 @@ export const Website = Cloudflare.Website.Vite(
           simple: { limit: 100, period: 60 },
         }),
       },
+      // Only prod owns the real hostnames; www 301s to the apex before the Worker runs
+      domain:
+        stage === "prod"
+          ? { name: "showoff.gg", redirects: ["www.showoff.gg"] }
+          : undefined,
     };
   }),
 );

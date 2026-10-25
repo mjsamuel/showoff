@@ -68,7 +68,7 @@ pnpm build       # Typecheck app + worker, then vite build
 
 ## Deployment
 
-`.github/workflows/deploy.yml` deploys `main` to the `prod` stage, and each same-repo PR to a `pr-<number>` preview stage that is destroyed when the PR closes. It needs a `CLOUDFLARE_API_TOKEN` secret and a `CLOUDFLARE_ACCOUNT_ID` variable on the repository.
+`.github/workflows/deploy.yml` deploys `main` to the `prod` stage at [showoff.gg](https://showoff.gg) (`www.showoff.gg` redirects to it), and each same-repo PR to a `pr-<number>` preview stage that is destroyed when the PR closes. It needs a `CLOUDFLARE_API_TOKEN` secret and a `CLOUDFLARE_ACCOUNT_ID` variable on the repository.
 
 To deploy by hand:
 
