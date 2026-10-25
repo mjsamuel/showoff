@@ -16,7 +16,6 @@ import { useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useGame, type GamePlayer } from "@/hooks/use-game";
 import { cn } from "@/lib/utils";
-import { MAX_LIVES } from "@/lib/types";
 
 export function NavPlayers({ className }: Readonly<{ className?: string }>) {
   const { players, roster, changeLives } = useGame();
@@ -133,12 +132,13 @@ function LifeCounter({
   lives: number;
   onChange: (delta: number) => void;
 }>) {
+  // No bounds check here: `lives` can lag behind the room, which clamps instead
   function incrementLives() {
-    if (lives < MAX_LIVES) onChange(1);
+    onChange(1);
   }
 
   function decrementLives() {
-    if (lives > 0) onChange(-1);
+    onChange(-1);
   }
 
   return (
